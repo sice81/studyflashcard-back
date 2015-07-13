@@ -1,4 +1,4 @@
-package hello;
+package com.genius.flashcard;
 
 public class Greeting {
 
