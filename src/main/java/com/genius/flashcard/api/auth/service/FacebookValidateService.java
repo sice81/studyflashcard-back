@@ -2,31 +2,44 @@ package com.genius.flashcard.api.auth.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import org.apache.log4j.Level;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class FacebookValidateService {
+	Logger logger = Logger.getLogger(this.getClass().getName());
+	
 	RestTemplate restTemplate = new RestTemplate();
 	String URL = "https://graph.facebook.com/me";
 	
-	public void validate(String accessToken, String userId) throws Exception {
+	public boolean validate(String accessToken, String userId) throws Exception {
+		boolean result = false;
+		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("access_token", accessToken);
 		
 		String url = String.format("%s?access_token=%s", URL, accessToken);
 		
 //		ResponseEntity<FacebookDto> res = restTemplate.postForEntity(URL, null, FacebookDto.class, map);
-		ResponseEntity<FacebookDto> res = restTemplate.getForEntity(url, FacebookDto.class, map);
-		
-		// 성공적인 경우
-		if (res.getBody().error == null) {
-			System.out.println("success.");
-		} else {
-			System.out.println("fail!");
+		try {
+			ResponseEntity<FacebookDto> res = restTemplate.getForEntity(url, FacebookDto.class, map);
+			
+			// 성공적인 경우
+			if (res.getBody().error == null) {
+				if (userId.equals(res.getBody().getId())) {
+					result = true;
+				}
+			}
+		} catch (Exception e) {
+			// TODO 로그 좀 정리할 것... 스택트레이스 안 나옴...
+			logger.log(java.util.logging.Level.WARNING, e.getMessage(), e.getCause());
 		}
+		
+		return result;
 	}
 }
 
