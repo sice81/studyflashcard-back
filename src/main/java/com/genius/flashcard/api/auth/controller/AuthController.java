@@ -1,6 +1,9 @@
 package com.genius.flashcard.api.auth.controller;
 
+import java.util.List;
 import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.genius.flashcard.api.auth.UserDao;
+import com.genius.flashcard.api.auth.dao.UserDao;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.auth.service.FacebookValidateService;
 
@@ -29,6 +32,11 @@ public class AuthController {
 		userDao.saveUser(user);
 		return user;
 	}
+	
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public List<User> users() throws Exception {
+		return userDao.findAll();
+	}
 
 	/**
 	 * 페이스북 javascript api로 받은 값을 검증한다.
@@ -39,7 +47,16 @@ public class AuthController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/facebook", method = RequestMethod.POST)
-	public boolean facebook(@RequestParam String accessToken, @RequestParam String userId) throws Exception {
-		return facebookValidateService.validate(accessToken, userId);
+	public boolean facebook(@RequestParam String accessToken, @RequestParam String userId, HttpServletRequest request) throws Exception {
+		boolean result = facebookValidateService.validate(accessToken, userId);
+		
+//		if (result) {
+//			UserSession us = new UserSession();
+//			us.setSessionId(request.getCookies());
+//			
+////			request.setSession();
+//		}
+		
+		return result;
 	}
 }

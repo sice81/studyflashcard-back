@@ -1,4 +1,6 @@
-package com.genius.flashcard.api.auth;
+package com.genius.flashcard.api.auth.dao;
+
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -16,5 +18,13 @@ public class UserDao {
 	
 	public void saveUser(User user) {
 		hibernateTemplate.save(user);
+	}
+	
+	public User getUser(String userId) {
+		return hibernateTemplate.get(User.class, userId);
+	}
+	
+	public List<User> findAll() {
+		return hibernateTemplate.loadAll(User.class);
 	}
 }

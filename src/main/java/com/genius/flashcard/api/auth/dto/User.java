@@ -7,12 +7,32 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
+import com.genius.flashcard.common.enums.UserTypeEnum;
+import com.genius.flashcard.common.enums.UserStatusEnum;
+import com.genius.flashcard.hibernate.type.UserTypeEnumType;
+
 @Entity
 @Table(name = "USERS")
 public class User {
+	
+	public static final String BASE_PATH = "com.genius.flashcard.hibernate.type.";
 
 	@Id
+	@Column(name = "USER_ID")
 	String userId;
+
+	@Type(type = BASE_PATH + "UserTypeEnumType")
+	@Column(name = "USER_TYPE_CD")
+	UserTypeEnum userType;
+	
+	@Type(type = BASE_PATH + "UserStatusEnumType")
+	@Column(name = "USER_STATUS_CD")
+	UserStatusEnum userStatus;
+	
+	@Column(name = "EXTERN_USER_ID")
+	String externUserId;
 
 	@Column(name = "USER_EMAIL")
 	String userEmail;
@@ -20,7 +40,7 @@ public class User {
 	@Column(name = "PASSWORD")
 	String password;
 
-	@Column(name = "CREATE_DATE")
+	@Column(name = "CREATED_DATE")
 	Date createdDate;
 
 	public String getUserId() {
@@ -29,6 +49,30 @@ public class User {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	
+	public UserTypeEnum getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserTypeEnum userType) {
+		this.userType = userType;
+	}
+
+	public UserStatusEnum getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(UserStatusEnum userStatus) {
+		this.userStatus = userStatus;
+	}
+
+	public String getExternUserId() {
+		return externUserId;
+	}
+
+	public void setExternUserId(String externUserId) {
+		this.externUserId = externUserId;
 	}
 
 	public String getUserEmail() {
@@ -54,4 +98,9 @@ public class User {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
+
+	public static String getBasePath() {
+		return BASE_PATH;
+	}
+
 }
