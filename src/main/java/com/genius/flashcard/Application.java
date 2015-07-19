@@ -7,14 +7,20 @@ import javax.annotation.PostConstruct;
 import org.h2.tools.Console;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 import com.genius.flashcard.api.auth.dao.UserDao;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.common.enums.UserStatusEnum;
 import com.genius.flashcard.common.enums.UserTypeEnum;
 
-@SpringBootApplication
+
+@Configuration
+@ComponentScan
+@EnableAutoConfiguration
+//@SpringBootApplication
 public class Application {
 	@Autowired
 	UserDao userDao;

@@ -59,7 +59,9 @@ public class AuthController {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("result", result);
-		map.put("accessToken", tokenService.allocate(user).getToken().getKey());
+		if (result) {
+			map.put("accessToken", tokenService.allocate(user).getToken().getKey());
+		}
 		return map;
 	}
 }

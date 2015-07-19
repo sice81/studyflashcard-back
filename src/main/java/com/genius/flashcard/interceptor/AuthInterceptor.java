@@ -3,14 +3,17 @@ package com.genius.flashcard.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.genius.flashcard.auth.TokenService;
 
 public class AuthInterceptor implements HandlerInterceptor {
-	TokenService tokenService = new TokenService();
+	@Autowired
+	TokenService tokenService;
 	
 	String[] allows = new String[]{"/api/auth/facebook"};
 	
@@ -29,6 +32,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 		}
 		
 		String accessToken = request.getParameter("accessToken");
+		if (accessToken == null) {
+			accessToken = request.getHeader("accessToken");
+		}
+		
 		if (tokenService.verify(accessToken) == false) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		}

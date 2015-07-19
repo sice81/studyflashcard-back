@@ -23,7 +23,12 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		super.addInterceptors(registry);
-		registry.addInterceptor(new AuthInterceptor());
+		registry.addInterceptor(authInterceptor());
+	}
+	
+	@Bean
+	public AuthInterceptor authInterceptor() {
+		return new AuthInterceptor();
 	}
 	
 	@Bean

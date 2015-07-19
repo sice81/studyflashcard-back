@@ -1,5 +1,7 @@
 package com.genius.flashcard.auth;
 
+import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +20,22 @@ import net.sf.ehcache.config.CacheConfiguration;
 
 @Component
 public class TokenService {
+	Logger logger = Logger.getLogger(this.getClass().getName());
+	
 	KeyBasedPersistenceTokenService s = new KeyBasedPersistenceTokenService();
 	Ehcache cache;
 	
 	@Autowired
 	CacheManager cacheManager;
 	
+	public void setCacheManager(CacheManager cacheManager) {
+		this.cacheManager = cacheManager;
+	}
+	
 	@PostConstruct
 	public void init() {
+		logger.info("init()");
+		
 		CacheConfiguration cacheConfiguration = new CacheConfiguration("token", 10000);
 		cacheConfiguration.setOverflowToDisk(true);
 		cacheConfiguration.maxElementsOnDisk(10*10000);
@@ -53,17 +63,21 @@ public class TokenService {
 		
 		Token t = s.allocateToken("");
 		String accessToken = t.getKey();
-		
+
 		token.setToken(t);
 		token.setUser(user);
 		
 		Element e = new Element(accessToken, token);
 		cache.put(e);
 		
+		logger.info(String.format("allocated accessToken = %s", accessToken));
+		
 		return token;
 	}
 	
 	public boolean verify(String accessToken) {
+		logger.info(String.format("verify accessToken = %s", accessToken));
+		
 		if (accessToken == null) {
 			return false;
 		}
