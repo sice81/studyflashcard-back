@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import com.genius.flashcard.api.auth.dao.UserDao;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.common.enums.UserStatusEnum;
-import com.genius.flashcard.common.enums.UserTypeEnum;
+import com.genius.flashcard.common.enums.UserAccountTypeEnum;
 
 
 @Configuration
@@ -36,7 +36,7 @@ public class Application {
     	User user = new User();
     	user.setUserId("sice81");
     	user.setPassword("1234");
-    	user.setUserType(UserTypeEnum.FACEBOOK);
+    	user.setUserAccountType(UserAccountTypeEnum.FACEBOOK);
     	user.setUserStatus(UserStatusEnum.JUST);
     	
     	userDao.saveUser(user);

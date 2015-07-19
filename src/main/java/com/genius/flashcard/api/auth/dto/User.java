@@ -9,9 +9,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
-import com.genius.flashcard.common.enums.UserTypeEnum;
+import com.genius.flashcard.common.enums.UserAccountTypeEnum;
 import com.genius.flashcard.common.enums.UserStatusEnum;
-import com.genius.flashcard.hibernate.type.UserTypeEnumType;
+import com.genius.flashcard.hibernate.type.UserAccountTypeEnumType;
 
 @Entity
 @Table(name = "USERS")
@@ -26,9 +26,9 @@ public class User {
 	@Column(name = "USER_NAME")
 	String userName;
 
-	@Type(type = BASE_PATH + "UserTypeEnumType")
-	@Column(name = "USER_TYPE_CD")
-	UserTypeEnum userType;
+	@Type(type = BASE_PATH + "UserAccountTypeEnumType")
+	@Column(name = "USER_ACCOUNT_TYPE_CD")
+	UserAccountTypeEnum userAccountType;
 	
 	@Type(type = BASE_PATH + "UserStatusEnumType")
 	@Column(name = "USER_STATUS_CD")
@@ -62,12 +62,12 @@ public class User {
 		this.userName = userName;
 	}
 
-	public UserTypeEnum getUserType() {
-		return userType;
+	public UserAccountTypeEnum getUserAccountType() {
+		return userAccountType;
 	}
 
-	public void setUserType(UserTypeEnum userType) {
-		this.userType = userType;
+	public void setUserAccountType(UserAccountTypeEnum userAccountType) {
+		this.userAccountType = userAccountType;
 	}
 
 	public UserStatusEnum getUserStatus() {

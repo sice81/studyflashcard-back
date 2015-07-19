@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,6 +22,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 			throws Exception {
 		System.out.println("preHandle()");
 		
+		
+		// TODO 뭔가 애매함... 정리가 필요...
 		String url = request.getRequestURI();
 		
 		// 인증 패스 목록 검사
@@ -40,7 +42,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		}
 		
-		return false;
+		return true;
 	}
 
 	@Override

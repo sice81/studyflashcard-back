@@ -21,7 +21,7 @@ import com.genius.flashcard.api.auth.service.FacebookValidateService;
 import com.genius.flashcard.api.auth.service.FacebookValidateService.FacebookUserResDto;
 import com.genius.flashcard.auth.TokenService;
 import com.genius.flashcard.common.enums.UserStatusEnum;
-import com.genius.flashcard.common.enums.UserTypeEnum;
+import com.genius.flashcard.common.enums.UserAccountTypeEnum;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -44,7 +44,7 @@ public class AuthController {
 	}
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public List<User> users() throws Exception {
+	public List<User> users(User user) throws Exception {
 		return userDao.findAll();
 	}
 
@@ -65,13 +65,13 @@ public class AuthController {
 		if (result != null) {
 			User user;
 			
-			user = userDao.getUser(String.format("%s-%s", UserTypeEnum.FACEBOOK.getValue(), userId));
+			user = userDao.getUser(String.format("%s-%s", UserAccountTypeEnum.FACEBOOK.getValue(), userId));
 			
 			if (user == null) {
 				user = new User();
 				user.setUserName(result.getName());
-				user.setUserId(String.format("%s-%s", UserTypeEnum.FACEBOOK.getValue(), userId));
-				user.setUserType(UserTypeEnum.FACEBOOK);
+				user.setUserId(String.format("%s-%s", UserAccountTypeEnum.FACEBOOK.getValue(), userId));
+				user.setUserAccountType(UserAccountTypeEnum.FACEBOOK);
 				user.setUserStatus(UserStatusEnum.ACTIVE);
 				user.setExternUserId(userId);
 				user.setCreatedDate(new Date());

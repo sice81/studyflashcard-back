@@ -1,5 +1,7 @@
 package com.genius.flashcard.config;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
@@ -8,9 +10,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.genius.flashcard.CurrentUserHandlerMethodArgumentResolver;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.interceptor.AuthInterceptor;
 
@@ -24,6 +28,17 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		super.addInterceptors(registry);
 		registry.addInterceptor(authInterceptor());
+	}
+	
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+		super.addArgumentResolvers(argumentResolvers);
+		argumentResolvers.add(currentUserHandlerMethodArgumentResolver());
+	}
+	
+	@Bean
+	public CurrentUserHandlerMethodArgumentResolver currentUserHandlerMethodArgumentResolver() {
+		return new CurrentUserHandlerMethodArgumentResolver(); 
 	}
 	
 	@Bean
