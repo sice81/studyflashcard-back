@@ -96,4 +96,28 @@ public class TokenService {
 		
 		return true;
 	}
+	
+	public User getUser(String accessToken) {
+		logger.info(String.format("verify accessToken = %s", accessToken));
+		
+		User result = null;
+		
+		if (accessToken == null) {
+			return null;
+		}
+		
+		Element e = cache.get(accessToken);
+		
+		if (e == null) {
+			return null;
+		}
+		
+		MyToken token = (MyToken) e.getObjectValue();
+		
+		if (token != null) {
+			result = token.getUser();
+		}
+		
+		return result;
+	}
 }
