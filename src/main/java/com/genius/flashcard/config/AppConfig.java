@@ -8,11 +8,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.genius.flashcard.api.auth.dto.User;
+import com.genius.flashcard.interceptor.AuthInterceptor;
 
 @Configuration
-public class AppConfig {
+public class AppConfig extends WebMvcConfigurerAdapter {
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		super.addInterceptors(registry);
+		registry.addInterceptor(new AuthInterceptor());
+	}
 	
 	@Bean
 	public DataSource dataSource() {

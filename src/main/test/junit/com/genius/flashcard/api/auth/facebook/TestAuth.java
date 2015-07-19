@@ -13,7 +13,6 @@ import ch.qos.logback.core.net.ssl.SecureRandomFactoryBean;
 public class TestAuth {
 	KeyBasedPersistenceTokenService s = new KeyBasedPersistenceTokenService();
 	
-	AuthorizationServerTokenServ
 	@Before
 	public void init() throws NoSuchAlgorithmException, NoSuchProviderException {
 		SecureRandomFactoryBean f = new SecureRandomFactoryBean();
