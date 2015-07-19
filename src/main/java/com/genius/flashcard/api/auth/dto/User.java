@@ -17,11 +17,14 @@ import com.genius.flashcard.hibernate.type.UserTypeEnumType;
 @Table(name = "USERS")
 public class User {
 	
-	public static final String BASE_PATH = "com.genius.flashcard.hibernate.type.";
+	private static final String BASE_PATH = "com.genius.flashcard.hibernate.type.";
 
 	@Id
 	@Column(name = "USER_ID")
 	String userId;
+	
+	@Column(name = "USER_NAME")
+	String userName;
 
 	@Type(type = BASE_PATH + "UserTypeEnumType")
 	@Column(name = "USER_TYPE_CD")
@@ -50,7 +53,15 @@ public class User {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public UserTypeEnum getUserType() {
 		return userType;
 	}
@@ -97,10 +108,6 @@ public class User {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
-	}
-
-	public static String getBasePath() {
-		return BASE_PATH;
 	}
 
 }

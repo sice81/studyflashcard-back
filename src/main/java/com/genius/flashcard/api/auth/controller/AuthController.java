@@ -1,5 +1,6 @@
 package com.genius.flashcard.api.auth.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.genius.flashcard.api.auth.dao.UserDao;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.auth.service.FacebookValidateService;
+import com.genius.flashcard.api.auth.service.FacebookValidateService.FacebookUserResDto;
 import com.genius.flashcard.auth.TokenService;
+import com.genius.flashcard.common.enums.UserStatusEnum;
+import com.genius.flashcard.common.enums.UserTypeEnum;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -54,14 +58,32 @@ public class AuthController {
 	 */
 	@RequestMapping(value = "/facebook", method = RequestMethod.POST)
 	public Map<String, Object> facebook(@RequestParam String accessToken, @RequestParam String userId, HttpServletRequest request) throws Exception {
-		boolean result = facebookValidateService.validate(accessToken, userId);
-		User user = new User();
-		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", result);
-		if (result) {
+		
+		FacebookUserResDto result = facebookValidateService.getUser(accessToken, userId);
+		
+		if (result != null) {
+			User user;
+			
+			user = userDao.getUser(String.format("%s-%s", UserTypeEnum.FACEBOOK.getValue(), userId));
+			
+			if (user == null) {
+				user = new User();
+				user.setUserName(result.getName());
+				user.setUserId(String.format("%s-%s", UserTypeEnum.FACEBOOK.getValue(), userId));
+				user.setUserType(UserTypeEnum.FACEBOOK);
+				user.setUserStatus(UserStatusEnum.ACTIVE);
+				user.setExternUserId(userId);
+				user.setCreatedDate(new Date());
+				userDao.saveUser(user);
+			}
+			
+			map.put("result", true);
 			map.put("accessToken", tokenService.allocate(user).getToken().getKey());
+		} else {
+			map.put("result", false);
 		}
+		
 		return map;
 	}
 }
