@@ -7,15 +7,31 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.genius.flashcard.auth.TokenService;
+
 public class AuthInterceptor implements HandlerInterceptor {
+	TokenService tokenService = new TokenService();
+	
+	String[] allows = new String[]{"/api/auth/facebook"};
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		System.out.println("preHandle()");
 		
+		String url = request.getRequestURI();
+		
+		// 인증 패스 목록 검사
+		for (String i : allows) {
+			if (i.equals(url)) {
+				return true;
+			}
+		}
+		
 		String accessToken = request.getParameter("accessToken");
-		response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		if (tokenService.verify(accessToken) == false) {
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		}
 		
 		return false;
 	}

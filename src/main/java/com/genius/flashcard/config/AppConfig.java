@@ -14,6 +14,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.interceptor.AuthInterceptor;
 
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.config.DiskStoreConfiguration;
+
 @Configuration
 public class AppConfig extends WebMvcConfigurerAdapter {
 	
@@ -21,6 +24,18 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		super.addInterceptors(registry);
 		registry.addInterceptor(new AuthInterceptor());
+	}
+	
+	@Bean
+	public CacheManager cacheManager() {
+		net.sf.ehcache.config.Configuration c = new net.sf.ehcache.config.Configuration();
+		
+		DiskStoreConfiguration diskStoreConfiguration = new DiskStoreConfiguration();
+		diskStoreConfiguration.setPath("ehcache");
+		c.diskStore(diskStoreConfiguration);
+		CacheManager cm = new CacheManager(c);
+		
+		return cm;
 	}
 	
 	@Bean
