@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.genius.flashcard.annotation.CurrentUser;
 import com.genius.flashcard.api.auth.dao.UserDao;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.auth.service.FacebookValidateService;
 import com.genius.flashcard.api.auth.service.FacebookValidateService.FacebookUserResDto;
 import com.genius.flashcard.auth.TokenService;
-import com.genius.flashcard.common.enums.UserStatusEnum;
 import com.genius.flashcard.common.enums.UserAccountTypeEnum;
+import com.genius.flashcard.common.enums.UserStatusEnum;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -44,7 +45,7 @@ public class AuthController {
 	}
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public List<User> users(User user) throws Exception {
+	public List<User> users(@CurrentUser User user) throws Exception {
 		return userDao.findAll();
 	}
 
