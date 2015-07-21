@@ -29,16 +29,15 @@ public class Application {
     	Console.main(args);
         SpringApplication.run(Application.class, args);
     }
-    
+
     @PostConstruct
     public void addData() {
-    	System.out.println("addData");
-    	User user = new User();
-    	user.setUserId("sice81");
-    	user.setPassword("1234");
-    	user.setUserAccountType(UserAccountTypeEnum.FACEBOOK);
-    	user.setUserStatus(UserStatusEnum.JUST);
-    	
-    	userDao.saveUser(user);
+//    	System.out.println("addData");
+//    	User user = new User();
+//    	user.setUserId("sice81");
+//    	user.setPassword("1234");
+//    	user.setUserAccountType(UserAccountTypeEnum.FACEBOOK);
+//    	user.setUserStatus(UserStatusEnum.JUST);
+//    	userDao.saveUser(user);
     }
 }
