@@ -1,6 +1,7 @@
 package com.genius.flashcard.api.v1.cardpacks.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,9 @@ public class CardpackService {
 		String id = cardpackDao.save(c);
 		result = cardpackDao.get(id);
 		return result;
+	}
+
+	public List<Cardpack> findByUserId(String userId) {
+		return cardpackDao.findAll();
 	}
 }
