@@ -13,25 +13,25 @@ import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.auth.TokenService;
 
 public class CurrentUserHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
-	
+
 	@Autowired
 	TokenService tokenService;
-	
+
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
-		return parameter.getParameterType().equals(User.class) 
+		return parameter.getParameterType().equals(User.class)
 				&& parameter.getParameterAnnotation(CurrentUser.class) != null;
 	}
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-		String accessToken = webRequest.getHeader("accessToken");
-		
+		String accessToken = webRequest.getHeader("x-session-token");
+
 		if (accessToken == null) {
 			return WebArgumentResolver.UNRESOLVED;
 		}
-		
+
 		if (this.supportsParameter(parameter)) {
 			User user = tokenService.getUser(accessToken);
 			return user;

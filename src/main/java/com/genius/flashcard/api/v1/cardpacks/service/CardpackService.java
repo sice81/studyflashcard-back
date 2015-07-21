@@ -34,7 +34,8 @@ public class CardpackService {
 		c.setCreatedDate(new Date());
 
 		Cardpack result = null;
-		cardpackDao.save(c);
+		String id = cardpackDao.save(c);
+		result = cardpackDao.get(id);
 		return result;
 	}
 }

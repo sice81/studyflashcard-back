@@ -2,8 +2,11 @@ package com.genius.flashcard.api.v1.cardpacks.param;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+
 import com.genius.flashcard.api.v1.cardpacks.vo.Card;
 
+@Entity
 public class CardpackParam {
 	/**
 	 * 카드팩명

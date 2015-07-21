@@ -35,7 +35,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 		String accessToken = request.getParameter("accessToken");
 		if (accessToken == null) {
-			accessToken = request.getHeader("accessToken");
+			accessToken = request.getHeader("x-session-token");
 		}
 
 		if (tokenService.verify(accessToken) == false) {

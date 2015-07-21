@@ -15,7 +15,6 @@ import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.v1.cardpacks.dto.Cardpack;
 import com.genius.flashcard.api.v1.cardpacks.param.CardpackParam;
 import com.genius.flashcard.api.v1.cardpacks.service.CardpackService;
-import com.genius.flashcard.auth.TokenService;
 
 @RestController
 @RequestMapping("/api/app/v1")
@@ -24,9 +23,6 @@ public class CardpacksController {
 
 	@Autowired
 	CardpackService cardpackService;
-
-	@Autowired
-	TokenService tokenService;
 
 	@RequestMapping(value = "/users/{userId}/cardpacks", method = RequestMethod.POST)
 	public Cardpack create(@PathVariable String userId, @RequestBody CardpackParam cardpackParam, @CurrentUser User user) throws Exception {
