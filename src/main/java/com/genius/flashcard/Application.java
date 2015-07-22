@@ -26,7 +26,7 @@ public class Application {
 	UserDao userDao;
 
     public static void main(String[] args) throws SQLException {
-    	Console.main(args);
+    	Console.main();
         SpringApplication.run(Application.class, args);
     }
 
