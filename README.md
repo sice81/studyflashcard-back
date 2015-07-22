@@ -21,14 +21,11 @@
 
 ## 배포
 
+```sh
 wget https://pji-tokyo1.s3.amazonaws.com/dist-dev/studyflashcard-back.tar
 tar xvf studyflashcard-back.tar
-cd /home/ec2-user/studyflashcard-back;./bin/studyflashcard-back
-
-sudo su
 yum update
-
-/home/ec2-user/studyflashcard-back
+```
 
 1. 아래 /etc/init.d/genius-api 로 파일생성
 2. 서비스등록 - chkconfig --add genius-api
