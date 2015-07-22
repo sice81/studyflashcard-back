@@ -32,6 +32,7 @@ yum update
 
 1. 아래 /etc/init.d/genius-api 로 파일생성
 2. 서비스등록 - chkconfig --add genius-api
+3. service start genius-api
 ```sh
 #!/bin/sh
 ### BEGIN INIT INFO
