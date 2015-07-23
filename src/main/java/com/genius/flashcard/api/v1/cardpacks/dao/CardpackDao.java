@@ -30,6 +30,14 @@ public class CardpackDao {
 		return hibernateTemplate.get(Cardpack.class, cardpackId);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Cardpack> findByUserId(String userId) {
+		Cardpack c = new Cardpack();
+		c.setOwnerUserId(userId);
+		String query = String.format("from %s c WHERE c.ownerUserId = :ownerUserId", Cardpack.class.getName());
+		return (List<Cardpack>) hibernateTemplate.findByValueBean(query, c);
+	}
+
 	public List<Cardpack> findAll() {
 		return hibernateTemplate.loadAll(Cardpack.class);
 	}

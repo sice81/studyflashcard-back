@@ -41,6 +41,6 @@ public class CardpackService {
 	}
 
 	public List<Cardpack> findByUserId(String userId) {
-		return cardpackDao.findAll();
+		return cardpackDao.findByUserId(userId);
 	}
 }
