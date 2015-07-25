@@ -1,9 +1,14 @@
 package com.genius.flashcard.api.v1.cardpacks.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,13 +35,21 @@ public class CardpacksController {
 	CardpackDao cardpackDao;
 
 	@RequestMapping(value = "/users/{userId}/cardpacks", method = RequestMethod.POST)
-	public Cardpack create(@PathVariable String userId, @RequestBody CardpackParam cardpackParam, @CurrentUser User user) throws Exception {
+	public Map<String, Object> create(@PathVariable String userId, @RequestBody CardpackParam cardpackParam, @CurrentUser User user, HttpServletResponse res) throws Exception {
 		Assert.isTrue(cardpackService.isCanCreate(userId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
 		Assert.isTrue(cardpackParam.getCardpackName().length() > 0, "Name is empty!");
 		Assert.isTrue(cardpackParam.getDocData().length() > 0, "Name is empty!");
 
-		return cardpackService.create(cardpackParam, userId, user);
+		Cardpack c = cardpackService.create(cardpackParam, userId, user);
+
+		if (c != null) {
+			res.setStatus(HttpStatus.CREATED.value());
+		}
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("cardpackId", c.getCardpackId());
+		return map;
 	}
 
 	@RequestMapping(value = "/users/{userId}/cardpacks", method = RequestMethod.GET)

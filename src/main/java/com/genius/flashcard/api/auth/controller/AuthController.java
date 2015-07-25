@@ -38,17 +38,6 @@ public class AuthController {
 	@Autowired
 	TokenService tokenService;
 
-	@RequestMapping(value = "/signin", method = RequestMethod.POST)
-	public User signin(@RequestBody User user) throws Exception {
-		userDao.saveUser(user);
-		return user;
-	}
-
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public List<User> users(@CurrentUser User user) throws Exception {
-		return userDao.findAll();
-	}
-
 	/**
 	 * 페이스북 javascript api로 받은 값을 검증한다.
 	 *
