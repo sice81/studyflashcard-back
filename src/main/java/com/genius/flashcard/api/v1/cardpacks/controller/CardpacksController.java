@@ -84,8 +84,6 @@ public class CardpacksController {
 		Cardpack card = cardpackDao.get(cardpackId);
 		String signedUrl = s3SendService.getSignedUrl(card.getS3Key());
 
-		Thread.sleep(1000);
-
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("s3Url", signedUrl);
 		return map;
