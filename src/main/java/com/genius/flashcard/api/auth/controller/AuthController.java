@@ -1,25 +1,25 @@
 package com.genius.flashcard.api.auth.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.genius.flashcard.annotation.CurrentUser;
 import com.genius.flashcard.api.auth.dao.UserDao;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.auth.service.FacebookValidateService;
 import com.genius.flashcard.api.auth.service.FacebookValidateService.FacebookUserResDto;
+import com.genius.flashcard.api.v1.cardpacks.service.S3SendService;
 import com.genius.flashcard.auth.TokenService;
 import com.genius.flashcard.common.enums.UserAccountTypeEnum;
 import com.genius.flashcard.common.enums.UserStatusEnum;
@@ -37,6 +37,11 @@ public class AuthController {
 
 	@Autowired
 	TokenService tokenService;
+
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public void test(HttpServletResponse resp) throws IOException {
+		resp.sendRedirect("https://dev-geniusflashcard-doc-tokyo.s3.amazonaws.com/doc.json");
+	}
 
 	/**
 	 * 페이스북 javascript api로 받은 값을 검증한다.

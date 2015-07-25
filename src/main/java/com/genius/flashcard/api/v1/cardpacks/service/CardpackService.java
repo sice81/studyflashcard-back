@@ -27,12 +27,17 @@ public class CardpackService {
 		return true;
 	}
 
+	public boolean isCanGet(String userId, User user) {
+		return true;
+	}
+
 	public Cardpack create(CardpackParam cardpackParam, String userId, User user) {
 		Cardpack c = new Cardpack();
 		c.setCardpackName(cardpackParam.getCardpackName());
-		c.setDocData(cardpackParam.getDocData());
+//		c.setDocData(cardpackParam.getDocData());
 		c.setOwnerUserId(user.getUserId());
 		c.setCreatedDate(new Date());
+		c.setS3Key(cardpackParam.getS3Key());
 
 		Cardpack result = null;
 		String id = cardpackDao.save(c);

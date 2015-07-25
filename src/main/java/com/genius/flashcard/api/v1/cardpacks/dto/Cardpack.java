@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -40,13 +39,6 @@ public class Cardpack {
 	 */
 	@Column(name = "CARDPACK_NAME", nullable=false)
 	String cardpackName;
-
-	/**
-	 * 문서데이터
-	 */
-	@Lob
-	@Column(name = "DOC_DATA", nullable=false)
-	String docData;
 
 	/**
 	 * 소유유저ID
@@ -96,6 +88,12 @@ public class Cardpack {
 	@Column(name = "CREATED_DATE", nullable=false)
 	Date createdDate;
 
+	/**
+	 * S3 클라우드 키
+	 */
+	@Column(name = "S3_KEY")
+	String s3Key;
+
 	public String getCardpackId() {
 		return cardpackId;
 	}
@@ -118,14 +116,6 @@ public class Cardpack {
 
 	public void setCardpackName(String cardpackName) {
 		this.cardpackName = cardpackName;
-	}
-
-	public String getDocData() {
-		return docData;
-	}
-
-	public void setDocData(String docData) {
-		this.docData = docData;
 	}
 
 	public String getOwnerUserId() {
@@ -190,5 +180,13 @@ public class Cardpack {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public String getS3Key() {
+		return s3Key;
+	}
+
+	public void setS3Key(String s3Key) {
+		this.s3Key = s3Key;
 	}
 }
