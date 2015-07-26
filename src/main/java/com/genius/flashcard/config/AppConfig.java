@@ -1,6 +1,5 @@
 package com.genius.flashcard.config;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -18,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import com.genius.flashcard.CurrentUserHandlerMethodArgumentResolver;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.v1.cardpacks.dto.Cardpack;
+import com.genius.flashcard.api.v1.cardpacks.dto.StudyStatus;
 import com.genius.flashcard.interceptor.AuthInterceptor;
 
 import net.sf.ehcache.CacheManager;
@@ -78,6 +78,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		SessionFactory sf = builder
 				.addAnnotatedClass(User.class)
 				.addAnnotatedClass(Cardpack.class)
+				.addAnnotatedClass(StudyStatus.class)
 				.buildSessionFactory();
 
 		return sf;

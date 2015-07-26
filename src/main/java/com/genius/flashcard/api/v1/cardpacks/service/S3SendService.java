@@ -2,13 +2,12 @@ package com.genius.flashcard.api.v1.cardpacks.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.net.URL;
-
-import javax.annotation.PostConstruct;
+import java.nio.charset.Charset;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -18,6 +17,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 
@@ -53,6 +53,17 @@ public class S3SendService {
 				is.close();
 			}
 		}
+	}
+
+	public String get(String keyName) throws Exception {
+		String result = null;
+		AmazonS3 s3client = new AmazonS3Client(new BasicAWSCredentials(accessKey, secretKey));
+
+		S3Object obj = s3client.getObject(bucketName, keyName);
+		InputStream is = obj.getObjectContent();
+
+		result = StreamUtils.copyToString(is, Charset.forName("UTF-8"));
+		return result;
 	}
 
 	public String getSignedUrl(String keyName) {

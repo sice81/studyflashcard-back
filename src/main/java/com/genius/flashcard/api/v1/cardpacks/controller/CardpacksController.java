@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,10 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.genius.flashcard.annotation.CurrentUser;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.v1.cardpacks.dao.CardpackDao;
+import com.genius.flashcard.api.v1.cardpacks.dao.StudyStatusDao;
 import com.genius.flashcard.api.v1.cardpacks.dto.Cardpack;
+import com.genius.flashcard.api.v1.cardpacks.dto.StudyStatus;
 import com.genius.flashcard.api.v1.cardpacks.param.CardpackParam;
+import com.genius.flashcard.api.v1.cardpacks.param.StudyStatusParam;
 import com.genius.flashcard.api.v1.cardpacks.service.CardpackService;
 import com.genius.flashcard.api.v1.cardpacks.service.S3SendService;
+import com.genius.flashcard.api.v1.cardpacks.service.StudyStatusService;
 
 @RestController
 @RequestMapping("/api/app/v1")
@@ -42,17 +47,29 @@ public class CardpacksController {
 	@Autowired
 	S3SendService s3SendService;
 
+	@Autowired
+	StudyStatusDao studyStatusDao;
+
+	@Autowired
+	StudyStatusService studyStatusService;
+
+	@Autowired
+	MappingJackson2HttpMessageConverter converter;
+
 	@Value("${app.step}")
 	String APP_STEP;
 
 	@RequestMapping(value = "/users/{userId}/cardpacks", method = RequestMethod.POST)
-	public Map<String, Object> create(@PathVariable String userId, @RequestBody CardpackParam cardpackParam, @CurrentUser User user, HttpServletResponse res) throws Exception {
+	public Map<String, Object> create(@PathVariable String userId, @RequestBody CardpackParam cardpackParam,
+			@CurrentUser User user, HttpServletResponse res) throws Exception {
 		Assert.isTrue(cardpackService.isCanCreate(userId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
 		Assert.isTrue(cardpackParam.getCardpackName().length() > 0, "Name is empty!");
 		Assert.isTrue(cardpackParam.getDocData().length() > 0, "Name is empty!");
 
-		String dir = APP_STEP + "/" + new SimpleDateFormat("yyyyMM").format(new Date());
+		String yyyyMm = new SimpleDateFormat("yyyyMM").format(new Date());
+		String dd = new SimpleDateFormat("dd").format(new Date());
+		String dir = "Cardpacks/" + yyyyMm + "/" + dd;
 		String keyName = String.format("%s/%s", dir, UUID.randomUUID().toString());
 		s3SendService.send(cardpackParam.getDocData(), keyName);
 
@@ -77,7 +94,8 @@ public class CardpacksController {
 	}
 
 	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/doc", method = RequestMethod.GET)
-	public Map<String, Object> get(@PathVariable String userId, @PathVariable String cardpackId, @CurrentUser User user, HttpServletResponse resp) throws Exception {
+	public Map<String, Object> get(@PathVariable String userId, @PathVariable String cardpackId, @CurrentUser User user)
+			throws Exception {
 		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
 
@@ -87,6 +105,42 @@ public class CardpacksController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("s3Url", signedUrl);
 		return map;
+	}
+
+	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/status", method = RequestMethod.GET)
+	public String getStudyStatus(@PathVariable String userId, @PathVariable String cardpackId,
+			@CurrentUser User user) throws Exception {
+		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
+		Assert.isTrue(userId.length() > 0, "UserId is empty!");
+		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
+
+		String result = null;
+		StudyStatus status = studyStatusDao.get(userId, cardpackId);
+
+		if (status != null) {
+			result = s3SendService.get(status.getS3Key());
+		}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/status", method = RequestMethod.PUT)
+	public void putStudyStatus(@PathVariable String userId, @PathVariable String cardpackId,
+			@RequestBody StudyStatusParam studyStatusParam, @CurrentUser User user) throws Exception {
+		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
+		Assert.isTrue(userId.length() > 0, "UserId is empty!");
+		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
+
+		String json = converter.getObjectMapper().writeValueAsString(studyStatusParam);
+
+		String yyyyMm = new SimpleDateFormat("yyyyMM").format(new Date());
+		String dd = new SimpleDateFormat("dd").format(new Date());
+		String dir = "StudyStatus/" + yyyyMm + "/" + dd;
+		String keyName = String.format("%s/%s", dir, UUID.randomUUID().toString());
+
+		s3SendService.send(json, keyName);
+
+		studyStatusService.save(studyStatusParam, cardpackId, keyName, userId, user);
 	}
 
 }

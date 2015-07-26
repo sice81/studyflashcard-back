@@ -12,9 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import com.genius.flashcard.api.auth.dao.UserDao;
-import com.genius.flashcard.api.auth.dto.User;
-import com.genius.flashcard.common.enums.UserStatusEnum;
-import com.genius.flashcard.common.enums.UserAccountTypeEnum;
 
 
 @Configuration

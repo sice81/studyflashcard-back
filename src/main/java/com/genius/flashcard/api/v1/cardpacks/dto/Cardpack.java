@@ -89,7 +89,7 @@ public class Cardpack {
 	Date createdDate;
 
 	/**
-	 * S3 클라우드 키
+	 * S3 키
 	 */
 	@Column(name = "S3_KEY")
 	String s3Key;
