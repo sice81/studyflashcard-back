@@ -76,7 +76,7 @@ public class CardpacksController {
 		return cardpackService.findByUserId(user.getUserId());
 	}
 
-	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/doc", method = RequestMethod.GET)
 	public Map<String, Object> get(@PathVariable String userId, @PathVariable String cardpackId, @CurrentUser User user, HttpServletResponse resp) throws Exception {
 		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
