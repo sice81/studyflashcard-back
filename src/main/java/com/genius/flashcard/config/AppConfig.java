@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate4.HibernateTemplate;
@@ -61,14 +62,26 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		return cm;
 	}
 
+	@Value("${app.db.driver}")
+	String dbDriver;
+
+	@Value("${app.db.url}")
+	String dbUrl;
+
+	@Value("${app.db.username}")
+	String dbUsername;
+
+	@Value("${app.db.password}")
+	String dbPassword;
+
 	@Bean
 	public DataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
 
-		dataSource.setDriverClassName("org.h2.Driver");
-		dataSource.setUrl("jdbc:h2:~/h2db/test");
-		dataSource.setUsername("sa");
-		dataSource.setPassword("");
+		dataSource.setDriverClassName(dbDriver);
+		dataSource.setUrl(dbUrl);
+		dataSource.setUsername(dbUsername);
+		dataSource.setPassword(dbPassword);
 
 		return dataSource;
 	}
