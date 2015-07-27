@@ -3,10 +3,8 @@ package com.genius.flashcard.api.v1.cardpacks.dto;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Index;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -16,7 +14,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "STUDY_STATUS", indexes = @Index(columnList = "USER_ID") )
+@Table(name = "STUDY_STATUS")
 public class StudyStatus implements Serializable {
 
 	/**
@@ -24,14 +22,13 @@ public class StudyStatus implements Serializable {
 	 */
 	private static final long serialVersionUID = 3727135471879053557L;
 
-	@EmbeddedId
-	StudyStatus.PK pk;
+	@Id
+	@Column(name = "USER_ID")
+	String userId;
 
-//	@Column(name = "USER_ID")
-//	String userId;
-//
-//	@Column(name = "CARDPACK_ID")
-//	String cardpackId;
+	@Id
+	@Column(name = "CARDPACK_ID")
+	String cardpackId;
 
 	/**
 	 * S3 키
@@ -39,12 +36,20 @@ public class StudyStatus implements Serializable {
 	@Column(name = "S3_KEY")
 	String s3Key;
 
-	public StudyStatus.PK getPk() {
-		return pk;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setPk(StudyStatus.PK pk) {
-		this.pk = pk;
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getCardpackId() {
+		return cardpackId;
+	}
+
+	public void setCardpackId(String cardpackId) {
+		this.cardpackId = cardpackId;
 	}
 
 	public String getS3Key() {
@@ -55,61 +60,4 @@ public class StudyStatus implements Serializable {
 		this.s3Key = s3Key;
 	}
 
-	@Embeddable
-	public static class PK implements Serializable {
-		/**
-		*
-		*/
-		private static final long serialVersionUID = 2402120266617286015L;
-
-		@Column(name = "USER_ID")
-		private String userId;
-
-		@Column(name = "CARDPACK_ID")
-		private String cardpackId;
-
-		public PK() {
-			super();
-		}
-
-		public PK(String userId, String cardpackId) {
-			super();
-			this.userId = userId;
-			this.cardpackId = cardpackId;
-		}
-
-		public String getUserId() {
-			return userId;
-		}
-
-		public void setUserId(String userId) {
-			this.userId = userId;
-		}
-
-		public String getCardpackId() {
-			return cardpackId;
-		}
-
-		public void setCardpackId(String cardpackId) {
-			this.cardpackId = cardpackId;
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (o == this) {
-				return true;
-			}
-			if (!(o instanceof PK)) {
-				return false;
-			}
-			PK other = (PK) o;
-			return this.userId.equals(other.userId) && this.cardpackId.equals(other.cardpackId);
-		}
-
-		@Override
-		public int hashCode() {
-			return this.userId.hashCode() ^ this.cardpackId.hashCode();
-		}
-
-	}
 }

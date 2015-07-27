@@ -16,9 +16,9 @@ public class StudyStatusService {
 
 	public void save(StudyStatusParam studyStatusParam, String cardpackId, String s3Key, String userId, User user) {
 		StudyStatus studyStatus = new StudyStatus();
-//		studyStatus.setUserId(userId);
-//		studyStatus.setCardpackId(cardpackId);
-		studyStatus.setPk(new StudyStatus.PK(userId, cardpackId));
+		studyStatus.setUserId(userId);
+		studyStatus.setCardpackId(cardpackId);
+//		studyStatus.setPk(new StudyStatus.PK(userId, cardpackId));
 		studyStatus.setS3Key(s3Key);
 
 		studyStatusDao.saveOrUpdate(studyStatus);

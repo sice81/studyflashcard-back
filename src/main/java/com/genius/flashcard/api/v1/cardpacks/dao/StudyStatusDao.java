@@ -29,11 +29,11 @@ public class StudyStatusDao {
 
 	public StudyStatus get(String userId, String cardpackId) {
 		StudyStatus c = new StudyStatus();
-//		c.setUserId(userId);
-//		c.setCardpackId(cardpackId);
-		c.setPk(new StudyStatus.PK(userId, cardpackId));
-		String query = String.format("FROM %s c WHERE c.pk.userId = :userId AND c.pk.cardpackId = :cardpackId", StudyStatus.class.getName());
-		List<StudyStatus> list = (List<StudyStatus>) hibernateTemplate.findByValueBean(query, c.getPk());
+		c.setUserId(userId);
+		c.setCardpackId(cardpackId);
+//		c.setPk(new StudyStatus.PK(userId, cardpackId));
+		String query = String.format("FROM %s c WHERE c.userId = :userId AND c.cardpackId = :cardpackId", StudyStatus.class.getName());
+		List<StudyStatus> list = (List<StudyStatus>) hibernateTemplate.findByValueBean(query, c);
 
 		if (list.size() > 0) {
 			return list.get(0);

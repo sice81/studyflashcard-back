@@ -17,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import com.genius.flashcard.CurrentUserHandlerMethodArgumentResolver;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.v1.cardpacks.dto.Cardpack;
+import com.genius.flashcard.api.v1.cardpacks.dto.StudyActLog;
 import com.genius.flashcard.api.v1.cardpacks.dto.StudyStatus;
 import com.genius.flashcard.interceptor.AuthInterceptor;
 
@@ -79,6 +80,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 				.addAnnotatedClass(User.class)
 				.addAnnotatedClass(Cardpack.class)
 				.addAnnotatedClass(StudyStatus.class)
+				.addAnnotatedClass(StudyActLog.class)
 				.buildSessionFactory();
 
 		return sf;
