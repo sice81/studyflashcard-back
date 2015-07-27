@@ -27,7 +27,7 @@ public class CardpackDao {
 	}
 
 	public Cardpack get(String cardpackId) {
-		return hibernateTemplate.get(Cardpack.class, cardpackId);
+		return hibernateTemplate.get(Cardpack.class, Long.parseLong(cardpackId));
 	}
 
 	@SuppressWarnings("unchecked")

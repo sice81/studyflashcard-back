@@ -38,6 +38,7 @@ dependencies {
     compile("net.sf.ehcache:ehcache-core:2.4.6")
     compile("org.springframework:spring-test:2.5")
     compile('com.amazonaws:aws-java-sdk:1.2.1')
+    compile('mysql:mysql-connector-java:5.1.36')
 
     testCompile("junit:junit")
 }

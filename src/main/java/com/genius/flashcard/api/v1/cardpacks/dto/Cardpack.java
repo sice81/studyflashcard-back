@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 /**
  * 카드팩
+ *
  * @author 박재익
  *
  */
@@ -24,9 +25,9 @@ public class Cardpack {
 	 * 카드팩ID
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue
 	@Column(name = "CARDPACK_ID")
-	String cardpackId;
+	long cardpackId;
 
 	/**
 	 * 문서버전
@@ -37,13 +38,13 @@ public class Cardpack {
 	/**
 	 * 카드팩명
 	 */
-	@Column(name = "CARDPACK_NAME", nullable=false)
+	@Column(name = "CARDPACK_NAME", nullable = false)
 	String cardpackName;
 
 	/**
 	 * 소유유저ID
 	 */
-	@Column(name = "OWNER_USER_ID", nullable=false)
+	@Column(name = "OWNER_USER_ID", nullable = false)
 	String ownerUserId;
 
 	/**
@@ -85,7 +86,7 @@ public class Cardpack {
 	/**
 	 * 생성일시
 	 */
-	@Column(name = "CREATED_DATE", nullable=false)
+	@Column(name = "CREATED_DATE", nullable = false)
 	Date createdDate;
 
 	/**
@@ -94,11 +95,11 @@ public class Cardpack {
 	@Column(name = "S3_KEY")
 	String s3Key;
 
-	public String getCardpackId() {
+	public long getCardpackId() {
 		return cardpackId;
 	}
 
-	public void setCardpackId(String cardpackId) {
+	public void setCardpackId(long cardpackId) {
 		this.cardpackId = cardpackId;
 	}
 
