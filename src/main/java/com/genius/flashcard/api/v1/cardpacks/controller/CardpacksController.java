@@ -24,11 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.genius.flashcard.annotation.CurrentUser;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.v1.cardpacks.dao.CardpackDao;
+import com.genius.flashcard.api.v1.cardpacks.dao.StudyActLogDao;
 import com.genius.flashcard.api.v1.cardpacks.dao.StudyStatusDao;
 import com.genius.flashcard.api.v1.cardpacks.dto.Cardpack;
+import com.genius.flashcard.api.v1.cardpacks.dto.StudyActLog;
 import com.genius.flashcard.api.v1.cardpacks.dto.StudyStatus;
 import com.genius.flashcard.api.v1.cardpacks.param.CardpackParam;
 import com.genius.flashcard.api.v1.cardpacks.param.StudyStatusParam;
+import com.genius.flashcard.api.v1.cardpacks.param.StudyStatusParam.StudyActLogParam;
 import com.genius.flashcard.api.v1.cardpacks.service.CardpackService;
 import com.genius.flashcard.api.v1.cardpacks.service.S3SendService;
 import com.genius.flashcard.api.v1.cardpacks.service.StudyStatusService;
@@ -107,6 +110,9 @@ public class CardpacksController {
 		return map;
 	}
 
+	@Autowired
+	StudyActLogDao studyActLogDao;
+
 	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/status", method = RequestMethod.GET)
 	public String getStudyStatus(@PathVariable String userId, @PathVariable String cardpackId,
 			@CurrentUser User user) throws Exception {
@@ -141,6 +147,21 @@ public class CardpacksController {
 		s3SendService.send(json, keyName);
 
 		studyStatusService.save(studyStatusParam, cardpackId, keyName, userId, user);
+
+		StudyActLogParam act = studyStatusParam.getStudyActLog();
+		if (act != null) {
+			StudyActLog studyActLog = new StudyActLog();
+			studyActLog.setUserId(userId);
+			studyActLog.setCardpackId(cardpackId);
+			studyActLog.setCreatedDate(new Date());
+			studyActLog.setWrongCnt(act.getWrongCnt());
+			studyActLog.setRightCnt(act.getRightCnt());
+			studyActLog.setCardViewCnt(act.getCardViewCnt());
+
+			if (act.getRightCnt() > 0 || act.getWrongCnt() > 0 || act.getCardViewCnt() > 0) {
+				studyActLogDao.save(studyActLog);
+			}
+		}
 	}
 
 }
