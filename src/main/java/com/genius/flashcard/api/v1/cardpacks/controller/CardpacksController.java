@@ -137,12 +137,18 @@ public class CardpacksController {
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
 		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
 
+		StudyStatus status = studyStatusDao.get(userId, cardpackId);
 		String json = converter.getObjectMapper().writeValueAsString(studyStatusParam);
-
 		String yyyyMm = new SimpleDateFormat("yyyyMM").format(new Date());
 		String dd = new SimpleDateFormat("dd").format(new Date());
 		String dir = "StudyStatus/" + yyyyMm + "/" + dd;
 		String keyName = String.format("%s/%s", dir, UUID.randomUUID().toString());
+
+		if (status != null) {
+			if (status.getS3Key() != null) {
+				keyName = status.getS3Key();
+			}
+		}
 
 		s3SendService.send(json, keyName);
 
