@@ -92,6 +92,26 @@ public class CardpacksController {
 		return map;
 	}
 
+	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}", method = RequestMethod.PUT)
+	public Map<String, Object> put(@PathVariable String userId, @PathVariable String cardpackId,
+			@RequestBody CardpackParam cardpackParam, @CurrentUser User user, HttpServletResponse res)
+					throws Exception {
+		Assert.isTrue(cardpackService.isCanCreate(userId, user), "You don't have permission!");
+		Assert.isTrue(userId.length() > 0, "UserId is empty!");
+		Assert.isTrue(cardpackParam.getCardpackName().length() > 0, "Name is empty!");
+		Assert.isTrue(cardpackParam.getDocData().length() > 0, "Name is empty!");
+
+		Cardpack c = cardpackDao.get(cardpackId);
+		s3SendService.send(cardpackParam.getDocData(), c.getS3Key());
+
+		cardpackParam.setS3Key(c.getS3Key());
+		cardpackService.create(cardpackParam, userId, user);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("cardpackId", c.getCardpackId());
+		return map;
+	}
+
 	@RequestMapping(value = "/users/{userId}/cardpacks", method = RequestMethod.GET)
 	public List<Cardpack> list(@PathVariable String userId, @CurrentUser User user) throws Exception {
 		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
@@ -115,8 +135,8 @@ public class CardpacksController {
 	}
 
 	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/status", method = RequestMethod.GET)
-	public String getStudyStatus(@PathVariable String userId, @PathVariable String cardpackId,
-			@CurrentUser User user) throws Exception {
+	public String getStudyStatus(@PathVariable String userId, @PathVariable String cardpackId, @CurrentUser User user)
+			throws Exception {
 		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
 		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
@@ -172,8 +192,7 @@ public class CardpacksController {
 	}
 
 	@RequestMapping(value = "/cardpacks/{cardpackId}", method = RequestMethod.GET)
-	public Map<String, Object> getCardpack(@PathVariable String cardpackId, @CurrentUser User user)
-			throws Exception {
+	public Map<String, Object> getCardpack(@PathVariable String cardpackId, @CurrentUser User user) throws Exception {
 		Assert.isTrue(cardpackService.isCanGet(cardpackId, user), "You don't have permission!");
 
 		Cardpack card = cardpackDao.get(cardpackId);
