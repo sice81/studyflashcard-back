@@ -27,7 +27,7 @@ public class CardpackService {
 		return true;
 	}
 
-	public boolean isCanGet(String userId, User user) {
+	public boolean isCanGet(String cardpackId, User user) {
 		return true;
 	}
 

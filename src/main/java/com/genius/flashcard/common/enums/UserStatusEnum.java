@@ -7,54 +7,54 @@ package com.genius.flashcard.common.enums;
  */
 public enum UserStatusEnum implements Enumable {
 	UNKNOWN(null),
-	
+
 	EMPTY(""),
-	
+
 	/**
 	 * 가입 직후 상태
 	 */
-	JUST("just"),
-	
+	JUST("j"),
+
 	/**
 	 * 활동 상태
 	 */
-	ACTIVE("active"),
-	
+	ACTIVE("a"),
+
 	/**
 	 * 휴면 상태 - 일정 기간 활동이 없는 경우
 	 */
-	DORMANCY("dormancy"),
-	
+	DORMANCY("d"),
+
 	/**
 	 * 이용 금지 상태 - 불법 적인 활동으로 운영자에 의해 금지
 	 */
-	BANNED("banned"),
+	BANNED("b"),
 	;
-	
+
 	String value;
-	
+
 	UserStatusEnum(String value) {
 		this.value = value;
 	}
-	
+
 	public String value() {
 		return value;
 	}
-	
+
 	public static UserStatusEnum parse(String value) {
 		UserStatusEnum result = UserStatusEnum.UNKNOWN;
-		
+
 		if (value == null) {
 			return null;
 		}
-		
+
 		for (UserStatusEnum e : UserStatusEnum.values()) {
 			if (value.equals(e.value())) {
 				result = e;
 				break;
 			}
 		}
-		
+
 		return result;
 	}
 

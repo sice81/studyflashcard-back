@@ -11,29 +11,28 @@ import org.hibernate.annotations.Type;
 
 import com.genius.flashcard.common.enums.UserAccountTypeEnum;
 import com.genius.flashcard.common.enums.UserStatusEnum;
-import com.genius.flashcard.hibernate.type.UserAccountTypeEnumType;
 
 @Entity
 @Table(name = "USERS")
 public class User {
-	
+
 	private static final String BASE_PATH = "com.genius.flashcard.hibernate.type.";
 
 	@Id
 	@Column(name = "USER_ID")
 	String userId;
-	
+
 	@Column(name = "USER_NAME")
 	String userName;
 
 	@Type(type = BASE_PATH + "UserAccountTypeEnumType")
 	@Column(name = "USER_ACCOUNT_TYPE_CD")
 	UserAccountTypeEnum userAccountType;
-	
+
 	@Type(type = BASE_PATH + "UserStatusEnumType")
 	@Column(name = "USER_STATUS_CD")
 	UserStatusEnum userStatus;
-	
+
 	@Column(name = "EXTERN_USER_ID")
 	String externUserId;
 

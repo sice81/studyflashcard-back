@@ -1,13 +1,17 @@
-package com.genius.flashcard.api.v1.cardpacks.dto;
+	package com.genius.flashcard.api.v1.cardpacks.dto;
 
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+
+import com.genius.flashcard.common.enums.CardpackAccessCdEnum;
+import com.genius.flashcard.common.enums.CardpackStatusCdEnum;
 
 /**
  * 카드팩
@@ -54,28 +58,24 @@ public class Cardpack {
 	long downloadCnt;
 
 	/**
-	 * 상태코드 - 작성중, 서비스중, 정지, 만료(일정기간 엑세스 없는 경우)
+	 * 상태코드
 	 */
+	@Type(type = BASE_PATH + "CardpackStatusCdEnumType")
 	@Column(name = "STATUS_CD")
-	String statusCd;
+	CardpackStatusCdEnum statusCd;
 
 	/**
-	 * 접근권한코드 - 모두, 특정인, 본인
+	 * 접근권한코드
 	 */
 	@Column(name = "ACCESS_CD")
-	String accessCd;
+	@Type(type = BASE_PATH + "CardpackAccessCdEnumType")
+	CardpackAccessCdEnum accessCd;
 
 	/**
 	 * 카드팩 카테고리 ID
 	 */
 	@Column(name = "CARDPACK_CATEGORY_ID")
 	String cardpackCategoryId;
-
-	/**
-	 * 좋아요 수
-	 */
-	@Column(name = "LIKE_CNT")
-	long likeCnt;
 
 	/**
 	 * 최근액세스일시
@@ -94,6 +94,18 @@ public class Cardpack {
 	 */
 	@Column(name = "S3_KEY")
 	String s3Key;
+
+	/**
+	 * 카드개수
+	 */
+	@Column(name = "CARD_CNT")
+	int cardCnt;
+
+	/**
+	 * 삭제여부
+	 */
+	@Column(name = "IS_DELETE")
+	boolean isDelete;
 
 	public long getCardpackId() {
 		return cardpackId;
@@ -135,19 +147,19 @@ public class Cardpack {
 		this.downloadCnt = downloadCnt;
 	}
 
-	public String getStatusCd() {
+	public CardpackStatusCdEnum getStatusCd() {
 		return statusCd;
 	}
 
-	public void setStatusCd(String statusCd) {
+	public void setStatusCd(CardpackStatusCdEnum statusCd) {
 		this.statusCd = statusCd;
 	}
 
-	public String getAccessCd() {
+	public CardpackAccessCdEnum getAccessCd() {
 		return accessCd;
 	}
 
-	public void setAccessCd(String accessCd) {
+	public void setAccessCd(CardpackAccessCdEnum accessCd) {
 		this.accessCd = accessCd;
 	}
 
@@ -157,14 +169,6 @@ public class Cardpack {
 
 	public void setCardpackCategoryId(String cardpackCategoryId) {
 		this.cardpackCategoryId = cardpackCategoryId;
-	}
-
-	public long getLikeCnt() {
-		return likeCnt;
-	}
-
-	public void setLikeCnt(long likeCnt) {
-		this.likeCnt = likeCnt;
 	}
 
 	public Date getLastAccessDate() {
@@ -189,5 +193,21 @@ public class Cardpack {
 
 	public void setS3Key(String s3Key) {
 		this.s3Key = s3Key;
+	}
+
+	public int getCardCnt() {
+		return cardCnt;
+	}
+
+	public void setCardCnt(int cardCnt) {
+		this.cardCnt = cardCnt;
+	}
+
+	public boolean isDelete() {
+		return isDelete;
+	}
+
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
 	}
 }
