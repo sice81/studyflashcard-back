@@ -47,7 +47,7 @@ public class CardpackService {
 		return list.size();
 	}
 
-	public Cardpack create(CardpackParam cardpackParam, String userId, User user) throws Exception {
+	public String create(CardpackParam cardpackParam, String userId, User user) throws Exception {
 		Cardpack c = new Cardpack();
 		c.setCardpackName(cardpackParam.getCardpackName());
 //		c.setDocData(cardpackParam.getDocData());
@@ -57,10 +57,22 @@ public class CardpackService {
 		c.setCreatedDate(new Date());
 		c.setS3Key(cardpackParam.getS3Key());
 
-		Cardpack result = null;
-		String id = cardpackDao.save(c);
-		result = cardpackDao.get(id);
-		return result;
+		return cardpackDao.create(c);
+	}
+
+	public void save(CardpackParam cardpackParam, String cardpackId, String userId, User user) throws Exception {
+		Cardpack c = new Cardpack();
+
+		c.setCardpackId(Long.parseLong(cardpackId));
+		c.setCardpackName(cardpackParam.getCardpackName());
+//		c.setDocData(cardpackParam.getDocData());
+		c.setDocVer("1.0");
+		c.setCardCnt(getCardCnt(cardpackParam.getDocData()));
+		c.setOwnerUserId(user.getUserId());
+		c.setCreatedDate(new Date());
+		c.setS3Key(cardpackParam.getS3Key());
+
+		cardpackDao.saveOrUpdate(c);
 	}
 
 	public List<Cardpack> findByUserId(String userId) {

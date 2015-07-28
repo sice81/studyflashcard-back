@@ -17,7 +17,7 @@ public class CardpackDao {
 	@Autowired
 	HibernateTemplate hibernateTemplate;
 
-	public String save(Cardpack cardpack) {
+	public String create(Cardpack cardpack) {
 		Serializable s = hibernateTemplate.save(cardpack);
 		return s.toString();
 	}

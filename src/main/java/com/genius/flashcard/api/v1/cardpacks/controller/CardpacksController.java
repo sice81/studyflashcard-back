@@ -81,14 +81,14 @@ public class CardpacksController {
 		s3SendService.send(cardpackParam.getDocData(), keyName);
 
 		cardpackParam.setS3Key(keyName);
-		Cardpack c = cardpackService.create(cardpackParam, userId, user);
+		String cardpackId = cardpackService.create(cardpackParam, userId, user);
 
-		if (c != null) {
+		if (cardpackId != null) {
 			res.setStatus(HttpStatus.CREATED.value());
 		}
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("cardpackId", c.getCardpackId());
+		map.put("cardpackId", cardpackId);
 		return map;
 	}
 
@@ -105,7 +105,7 @@ public class CardpacksController {
 		s3SendService.send(cardpackParam.getDocData(), c.getS3Key());
 
 		cardpackParam.setS3Key(c.getS3Key());
-		cardpackService.create(cardpackParam, userId, user);
+		cardpackService.save(cardpackParam, cardpackId, userId, user);
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("cardpackId", c.getCardpackId());
