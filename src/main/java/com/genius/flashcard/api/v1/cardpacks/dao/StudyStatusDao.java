@@ -41,4 +41,10 @@ public class StudyStatusDao {
 			return null;
 		}
 	}
+
+	public int getInStudyUserCnt(String cardpackId) {
+		String query = String.format("SELECT COUNT(*) FROM %s c WHERE c.userId = :userId AND c.cardpackId = :cardpackId", StudyStatus.class.getName());
+//		hibernateTemplate.findByValueBean(query, c);
+		return 0;
+	}
 }
