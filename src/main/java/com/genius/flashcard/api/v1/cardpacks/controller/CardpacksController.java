@@ -35,6 +35,7 @@ import com.genius.flashcard.api.v1.cardpacks.param.StudyStatusParam.StudyActLogP
 import com.genius.flashcard.api.v1.cardpacks.service.CardpackService;
 import com.genius.flashcard.api.v1.cardpacks.service.S3SendService;
 import com.genius.flashcard.api.v1.cardpacks.service.StudyStatusService;
+import com.genius.flashcard.common.enums.StudyStatusCdEnum;
 
 @RestController
 @RequestMapping("/api/app/v1")
@@ -181,8 +182,8 @@ public class CardpacksController {
 		map.put("cardpackName", card.getCardpackName());
 		map.put("ownerUserId", card.getOwnerUserId());
 		map.put("cardCnt", card.getCardCnt());
-		map.put("inStudyUserCnt", 0);
-		map.put("completeStudyUserCnt", 0);
+		map.put("inStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.IN_STUDY));
+		map.put("completeStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.COMPLETE));
 		map.put("accessCd", card.getAccessCd());
 
 		return map;

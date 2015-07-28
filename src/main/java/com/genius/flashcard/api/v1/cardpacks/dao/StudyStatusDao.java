@@ -1,7 +1,9 @@
 package com.genius.flashcard.api.v1.cardpacks.dao;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -9,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.genius.flashcard.api.v1.cardpacks.dto.Cardpack;
 import com.genius.flashcard.api.v1.cardpacks.dto.StudyStatus;
+import com.genius.flashcard.common.enums.StudyStatusCdEnum;
 
 @Transactional
 @Repository
@@ -42,9 +44,19 @@ public class StudyStatusDao {
 		}
 	}
 
-	public int getInStudyUserCnt(String cardpackId) {
-		String query = String.format("SELECT COUNT(*) FROM %s c WHERE c.userId = :userId AND c.cardpackId = :cardpackId", StudyStatus.class.getName());
-//		hibernateTemplate.findByValueBean(query, c);
-		return 0;
+	/**
+	 * 유저수 개수
+	 * @param cardpackId
+	 * @return
+	 */
+	public long getCountInStudyUserCnt(String cardpackId, StudyStatusCdEnum studyStatusCd) {
+		StudyStatus c = new StudyStatus();
+		c.setCardpackId(cardpackId);
+		c.setStatusCd(studyStatusCd);
+
+		String query = String.format("SELECT COUNT(*) FROM %s c WHERE c.cardpackId = :cardpackId AND c.statusCd = :statusCd", StudyStatus.class.getName());
+		List<Long> list = (List<Long>) hibernateTemplate.findByValueBean(query, c);
+
+		return list.get(0);
 	}
 }
