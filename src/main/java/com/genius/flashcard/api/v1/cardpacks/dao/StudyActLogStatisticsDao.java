@@ -1,5 +1,6 @@
 package com.genius.flashcard.api.v1.cardpacks.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,19 +23,25 @@ public class StudyActLogStatisticsDao {
 	@Autowired
 	HibernateTemplate hibernateTemplate;
 
-	public StudyActLogStatistics.Days findDays(String userId, Date startDate, Date endDate) {
-		StudyActLogStatistics.Days days = null;
+	public List<StudyActLogStatistics> findDays(String userId, Date startDate, Date endDate) {
+		List<StudyActLogStatistics> days = new ArrayList<StudyActLogStatistics>();
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("    SELECT ");
-		sb.append("    SUM(c.wrongCnt) AS wrongCnt, ");
-		sb.append("    SUM(c.rightCnt) AS rightCnt, ");
-		sb.append("    SUM(c.backViewCnt) AS backViewCnt ");
+		sb.append("    new map ( ");
+		sb.append("    		YEAR(c.createdDate) as year, "
+				+ "			MONTH(c.createdDate) as month, "
+				+ "			DAY(c.createdDate) as date, "
+				+ "			SUM(c.wrongCnt) as wrongCnt, "
+				+ "			SUM(c.rightCnt) as rightCnt, "
+				+ "			SUM(c.backViewCnt) as backViewCnt ");
+		sb.append("    ) ");
 		sb.append("    FROM %s c ");
 		sb.append("    WHERE c.userId = :userId");
 		sb.append("    AND c.createdDate >= :startDate");
 		sb.append("    AND c.createdDate <= :endDate");
-//		sb.append("    GROUP BY c.userId, c.createdDate");
+		sb.append("    GROUP BY YEAR(c.createdDate), MONTH(c.createdDate), DAY(c.createdDate)");
+//		sb.append("    ORDER BY 1 2 3");
 
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("userId", userId);
@@ -42,9 +49,19 @@ public class StudyActLogStatisticsDao {
 		param.put("endDate", endDate);
 
 		String query = String.format(sb.toString(), StudyActLog.class.getName());
-//		List<StudyActLogStatistics.Days> list = (List<StudyActLogStatistics.Days>) hibernateTemplate.findByValueBean(query, param);
-		List<StudyActLogStatistics.Days> list = (List<StudyActLogStatistics.Days>) hibernateTemplate.findByNamedParam(query, new String[]{"userId", "startDate", "endDate"}, new Object[]{userId, startDate, endDate});
-//		List<Map<String, Object>> list = (List<Map<String, Object>>) hibernateTemplate.findByNamedParam(query, new String[]{"userId", "startDate", "endDate"}, new Object[]{userId, startDate, endDate});
+//		List list = hibernateTemplate.find(query);
+		List<Map<String, Object>> list = (List<Map<String, Object>>) hibernateTemplate.findByNamedParam(query, new String[]{"userId", "startDate", "endDate"}, new Object[]{userId, startDate, endDate});
+//		List list = hibernateTemplate.findByNamedParam(query, new String[]{"userId", "startDate"}, new Object[]{userId, startDate});
+
+		for (Map<String, Object> e : list) {
+			StudyActLogStatistics s = new StudyActLogStatistics();
+
+			s.setDate(String.format("%02d%02d%02d", e.get("year"), e.get("month"), e.get("date")));
+			s.setWrongCnt((long)e.get("wrongCnt"));
+			s.setRightCnt((long)e.get("rightCnt"));
+			s.setBackViewCnt((long)e.get("backViewCnt"));
+			days.add(s);
+		}
 
 		return days;
 	}

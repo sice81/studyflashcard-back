@@ -32,6 +32,7 @@ import com.genius.flashcard.api.v1.cardpacks.dao.StudyActLogStatisticsDao;
 import com.genius.flashcard.api.v1.cardpacks.dao.StudyStatusDao;
 import com.genius.flashcard.api.v1.cardpacks.dto.Cardpack;
 import com.genius.flashcard.api.v1.cardpacks.dto.StudyActLog;
+import com.genius.flashcard.api.v1.cardpacks.dto.StudyActLogStatistics;
 import com.genius.flashcard.api.v1.cardpacks.dto.StudyStatus;
 import com.genius.flashcard.api.v1.cardpacks.param.CardpackParam;
 import com.genius.flashcard.api.v1.cardpacks.param.StudyStatusParam;
@@ -142,19 +143,29 @@ public class CardpacksController {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
-		Date d1 = sdf.parse("20150720"), d2 = sdf.parse("20150729");
+		Date d1 = sdf.parse("20100720"), d2 = sdf.parse("20190729");
 
-		studyActLogStatisticsDao.findDays(userId, d1, d2);
+		List<StudyActLogStatistics> listStat = studyActLogStatisticsDao.findDays(userId, d1, d2);
 
-		// TODO 목업데이터 삭제할 것...
-		for (int i=0; i<7; i++) {
+		for (StudyActLogStatistics e : listStat) {
 			map = new HashMap<String, Object>();
-			map.put("date", "2015072" + i);
-			map.put("wrongCnt", Math.abs(new Random().nextInt() % 10));
-			map.put("rightCnt", Math.abs(new Random().nextInt() % 10));
-			map.put("backViewCnt", 10 + Math.abs(new Random().nextInt() % 10));
+			map.put("date", e.getDate());
+			map.put("wrongCnt", e.getWrongCnt());
+			map.put("rightCnt", e.getRightCnt());
+			map.put("backViewCnt", e.getBackViewCnt());
 			list.add(map);
 		}
+
+//
+//		// TODO 목업데이터 삭제할 것...
+//		for (int i=0; i<7; i++) {
+//			map = new HashMap<String, Object>();
+//			map.put("date", "2015072" + i);
+//			map.put("wrongCnt", Math.abs(new Random().nextInt() % 10));
+//			map.put("rightCnt", Math.abs(new Random().nextInt() % 10));
+//			map.put("backViewCnt", 10 + Math.abs(new Random().nextInt() % 10));
+//			list.add(map);
+//		}
 
 		return list;
 	}
