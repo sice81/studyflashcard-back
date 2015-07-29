@@ -1,40 +1,62 @@
 package com.genius.flashcard.api.v1.cardpacks.dto;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * 학습행동 집계
  *
  * @author 박재익
  *
  */
+@Entity
+@Table(name = "STUDY_ACT_LOG")
 public class StudyActLogStatistics {
-	public static class Days {
-		String date;
-		int wrongCnt;
-		int rightCnt;
-		int backViewCnt;
-		public String getDate() {
-			return date;
-		}
-		public void setDate(String date) {
-			this.date = date;
-		}
-		public int getWrongCnt() {
-			return wrongCnt;
-		}
-		public void setWrongCnt(int wrongCnt) {
-			this.wrongCnt = wrongCnt;
-		}
-		public int getRightCnt() {
-			return rightCnt;
-		}
-		public void setRightCnt(int rightCnt) {
-			this.rightCnt = rightCnt;
-		}
-		public int getBackViewCnt() {
-			return backViewCnt;
-		}
-		public void setBackViewCnt(int backViewCnt) {
-			this.backViewCnt = backViewCnt;
-		}
+	String date;
+	long wrongCnt;
+	long rightCnt;
+	long backViewCnt;
+
+	public StudyActLogStatistics() {
+		super();
+	}
+
+	public StudyActLogStatistics(long wrongCnt, long rightCnt, long backViewCnt) {
+		super();
+		this.wrongCnt = wrongCnt;
+		this.rightCnt = rightCnt;
+		this.backViewCnt = backViewCnt;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public long getWrongCnt() {
+		return wrongCnt;
+	}
+
+	public void setWrongCnt(long wrongCnt) {
+		this.wrongCnt = wrongCnt;
+	}
+
+	public long getRightCnt() {
+		return rightCnt;
+	}
+
+	public void setRightCnt(long rightCnt) {
+		this.rightCnt = rightCnt;
+	}
+
+	public long getBackViewCnt() {
+		return backViewCnt;
+	}
+
+	public void setBackViewCnt(long backViewCnt) {
+		this.backViewCnt = backViewCnt;
 	}
 }

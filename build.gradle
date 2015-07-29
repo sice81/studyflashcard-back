@@ -39,6 +39,7 @@ dependencies {
     compile("org.springframework:spring-test:2.5")
     compile('com.amazonaws:aws-java-sdk:1.2.1')
     compile('mysql:mysql-connector-java:5.1.36')
+    compile('ojdbc:ojdbc:14')
 
     testCompile("junit:junit")
 }
