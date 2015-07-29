@@ -28,6 +28,7 @@ import com.genius.flashcard.annotation.CurrentUser;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.v1.cardpacks.dao.CardpackDao;
 import com.genius.flashcard.api.v1.cardpacks.dao.StudyActLogDao;
+import com.genius.flashcard.api.v1.cardpacks.dao.StudyActLogStatisticsDao;
 import com.genius.flashcard.api.v1.cardpacks.dao.StudyStatusDao;
 import com.genius.flashcard.api.v1.cardpacks.dto.Cardpack;
 import com.genius.flashcard.api.v1.cardpacks.dto.StudyActLog;
@@ -123,6 +124,9 @@ public class CardpacksController {
 		return cardpackService.findByUserId(user.getUserId());
 	}
 
+	@Autowired
+	StudyActLogStatisticsDao studyActLogStatisticsDao;
+
 	@RequestMapping(value = "/users/{userId}/studyAct/statistics", method = RequestMethod.GET)
 	public List<Map<String, Object>> getStudyActStatistics(@PathVariable String userId,
 			@RequestParam(required = false) String startDate,
@@ -135,6 +139,12 @@ public class CardpacksController {
 
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+		Date d1 = sdf.parse("20150720"), d2 = sdf.parse("20150729");
+
+		studyActLogStatisticsDao.findDays(userId, d1, d2);
 
 		// TODO 목업데이터 삭제할 것...
 		for (int i=0; i<7; i++) {
