@@ -40,13 +40,13 @@ public class StudyStatus implements Serializable {
 	 * 틀림수
 	 */
 	@Column(name = "WRONG_CNT")
-	int wrongCnt;
+	int wrongCnt = 0;
 
 	/**
 	 * 맞음수
 	 */
 	@Column(name = "RIGHT_CNT")
-	int rightCnt;
+	int rightCnt = 0;
 
 	/**
 	 * 학습상태코드

@@ -55,7 +55,7 @@ public class Cardpack {
 	 * 다운로드수
 	 */
 	@Column(name = "DOWNLOAD_CNT")
-	long downloadCnt;
+	long downloadCnt = 0;
 
 	/**
 	 * 상태코드
@@ -99,7 +99,7 @@ public class Cardpack {
 	 * 카드개수
 	 */
 	@Column(name = "CARD_CNT")
-	int cardCnt;
+	int cardCnt = 0;
 
 	/**
 	 * 삭제여부

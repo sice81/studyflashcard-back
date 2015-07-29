@@ -50,19 +50,19 @@ public class StudyActLog implements Serializable {
 	 * 틀림수
 	 */
 	@Column(name = "WRONG_CNT")
-	int wrongCnt;
+	int wrongCnt = 0;
 
 	/**
 	 * 맞음수
 	 */
 	@Column(name = "RIGHT_CNT")
-	int rightCnt;
+	int rightCnt = 0;
 
 	/**
-	 * 카드보기횟수
+	 * 후면 보기횟수
 	 */
-	@Column(name = "CARD_VIEW_CNT")
-	int cardViewCnt;
+	@Column(name = "BACK_VIEW_CNT")
+	int backViewCnt = 0;
 
 	public String getUserId() {
 		return userId;
@@ -78,6 +78,14 @@ public class StudyActLog implements Serializable {
 
 	public void setCardpackId(String cardpackId) {
 		this.cardpackId = cardpackId;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	public int getWrongCnt() {
@@ -96,19 +104,11 @@ public class StudyActLog implements Serializable {
 		this.rightCnt = rightCnt;
 	}
 
-	public int getCardViewCnt() {
-		return cardViewCnt;
+	public int getBackViewCnt() {
+		return backViewCnt;
 	}
 
-	public void setCardViewCnt(int cardViewCnt) {
-		this.cardViewCnt = cardViewCnt;
-	}
-
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setBackViewCnt(int backViewCnt) {
+		this.backViewCnt = backViewCnt;
 	}
 }

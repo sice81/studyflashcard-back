@@ -1,10 +1,12 @@
 package com.genius.flashcard.api.v1.cardpacks.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.genius.flashcard.annotation.CurrentUser;
@@ -113,12 +116,39 @@ public class CardpacksController {
 	}
 
 	@RequestMapping(value = "/users/{userId}/cardpacks", method = RequestMethod.GET)
-	public List<Cardpack> list(@PathVariable String userId, @CurrentUser User user) throws Exception {
+	public List<Cardpack> getUserCardpacks(@PathVariable String userId, @CurrentUser User user) throws Exception {
 		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
 
 		return cardpackService.findByUserId(user.getUserId());
 	}
+
+	@RequestMapping(value = "/users/{userId}/studyAct/statistics", method = RequestMethod.GET)
+	public List<Map<String, Object>> getStudyActStatistics(@PathVariable String userId,
+			@RequestParam(required = false) String startDate,
+			@RequestParam(required = false) String endDate,
+			@RequestParam(required = false) String date,
+			@RequestParam(defaultValue="day") String type,
+			@CurrentUser User user) throws Exception {
+		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
+		Assert.isTrue(userId.length() > 0, "UserId is empty!");
+
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		// TODO 목업데이터 삭제할 것...
+		for (int i=0; i<7; i++) {
+			map = new HashMap<String, Object>();
+			map.put("date", "2015072" + i);
+			map.put("wrongCnt", Math.abs(new Random().nextInt() % 10));
+			map.put("rightCnt", Math.abs(new Random().nextInt() % 10));
+			map.put("backViewCnt", 10 + Math.abs(new Random().nextInt() % 10));
+			list.add(map);
+		}
+
+		return list;
+	}
+
 
 	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/doc", method = RequestMethod.GET)
 	public Map<String, Object> get(@PathVariable String userId, @PathVariable String cardpackId, @CurrentUser User user)
@@ -183,7 +213,7 @@ public class CardpacksController {
 			studyActLog.setCreatedDate(new Date());
 			studyActLog.setWrongCnt(act.getWrongCnt());
 			studyActLog.setRightCnt(act.getRightCnt());
-			studyActLog.setCardViewCnt(act.getCardViewCnt());
+			studyActLog.setBackViewCnt(act.getCardViewCnt());
 
 			if (act.getRightCnt() > 0 || act.getWrongCnt() > 0 || act.getCardViewCnt() > 0) {
 				studyActLogDao.save(studyActLog);
