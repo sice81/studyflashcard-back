@@ -47,7 +47,7 @@ rm studyflashcard-back.tar
 service genius-api start
 ```
 
-2.sdeplay.sh - jar 간편 배포
+2. sdeplay.sh - jar 간편 배포
 ```sh
 #!/bin/sh
 service genius-api stop
