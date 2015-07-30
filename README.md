@@ -36,10 +36,25 @@ date
 
 ## 배포
 
+1. deploy.sh - tar 전체 배포
 ```sh
+#!/bin/sh
+service genius-api stop
+rm -rf studyflashcard-back*
 wget https://pji-tokyo1.s3.amazonaws.com/dist-dev/studyflashcard-back.tar
 tar xvf studyflashcard-back.tar
-yum update
+rm studyflashcard-back.tar
+service genius-api start
+```
+
+2.sdeplay.sh - jar 간편 배포
+```sh
+#!/bin/sh
+service genius-api stop
+wget https://pji-tokyo1.s3.amazonaws.com/dist-dev/genius-study-0.1.1.jar.original
+cp genius-study-0.1.1.jar.original ./studyflashcard-back/lib/genius-study-0.1.1.jar
+rm genius-study-0.1.1.jar.original
+service genius-api start
 ```
 
 1. 아래 /etc/init.d/genius-api 로 파일생성
