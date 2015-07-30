@@ -196,7 +196,10 @@ public class CardpacksController {
 
 		for (StudyStatus e : list) {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("cardpackName", cardpackDao.get(e.getCardpackId()).getCardpackName());
+
+			Cardpack cardpack = cardpackDao.get(e.getCardpackId());
+			map.put("cardpackName", cardpack.getCardpackName());
+			map.put("cardCnt", cardpack.getCardCnt());
 			map.put("cardpackId", e.getCardpackId());
 			map.put("rightCnt", e.getRightCnt());
 			map.put("wrongCnt", e.getWrongCnt());

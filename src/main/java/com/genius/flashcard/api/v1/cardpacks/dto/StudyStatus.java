@@ -1,12 +1,11 @@
 package com.genius.flashcard.api.v1.cardpacks.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -63,6 +62,12 @@ public class StudyStatus implements Serializable {
 	@Column(name = "S3_KEY")
 	String s3Key;
 
+	/**
+	 * 수정일시
+	 */
+	@Column(name = "MODIFIED_DATE")
+	Date modifiedDate;
+
 	public String getUserId() {
 		return userId;
 	}
@@ -109,6 +114,14 @@ public class StudyStatus implements Serializable {
 
 	public void setS3Key(String s3Key) {
 		this.s3Key = s3Key;
+	}
+
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
 	}
 
 }

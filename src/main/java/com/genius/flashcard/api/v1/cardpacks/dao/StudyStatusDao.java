@@ -1,9 +1,8 @@
 package com.genius.flashcard.api.v1.cardpacks.dao;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -26,6 +25,7 @@ public class StudyStatusDao {
 	}
 
 	public void saveOrUpdate(StudyStatus studyStatus) {
+		studyStatus.setModifiedDate(new Date());
 		hibernateTemplate.saveOrUpdate(studyStatus);
 	}
 
@@ -48,7 +48,7 @@ public class StudyStatusDao {
 		StudyStatus c = new StudyStatus();
 		c.setUserId(userId);
 		c.setStudyStatusCd(studyStatusCd);
-		String query = String.format("FROM %s c WHERE c.userId = :userId AND c.studyStatusCd = :studyStatusCd", StudyStatus.class.getName());
+		String query = String.format("FROM %s c WHERE c.userId = :userId AND c.studyStatusCd = :studyStatusCd ORDER BY modifiedDate DESC", StudyStatus.class.getName());
 		List<StudyStatus> list = (List<StudyStatus>) hibernateTemplate.findByValueBean(query, c);
 
 		return list;

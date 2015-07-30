@@ -61,13 +61,13 @@ public class Cardpack {
 	 * 상태코드
 	 */
 	@Type(type = BASE_PATH + "CardpackStatusCdEnumType")
-	@Column(name = "STATUS_CD")
+	@Column(name = "CARDPACK_STATUS_CD")
 	CardpackStatusCdEnum statusCd;
 
 	/**
 	 * 접근권한코드
 	 */
-	@Column(name = "ACCESS_CD")
+	@Column(name = "CARDPACK_ACCESS_CD")
 	@Type(type = BASE_PATH + "CardpackAccessCdEnumType")
 	CardpackAccessCdEnum accessCd;
 
