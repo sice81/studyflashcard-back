@@ -19,6 +19,21 @@
 
 3. sudo alternatives --config java > 2번 선택
 
+## 타임존 변경
+
+```
+1. 원래 파일 백업
+mv /etc/localtime /etc/localtime_org
+
+2. 지역을 서울로 변경
+ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+
+3. 변경후 확인 : KST로 보이는지 확인
+date
+2014. 07. 18. (11:36:35 KST
+```
+
+
 ## 배포
 
 ```sh
