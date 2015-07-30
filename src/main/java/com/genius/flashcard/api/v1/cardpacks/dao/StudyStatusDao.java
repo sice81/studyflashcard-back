@@ -44,6 +44,16 @@ public class StudyStatusDao {
 		}
 	}
 
+	public List<StudyStatus> find(String userId, StudyStatusCdEnum studyStatusCd) {
+		StudyStatus c = new StudyStatus();
+		c.setUserId(userId);
+		c.setStudyStatusCd(studyStatusCd);
+		String query = String.format("FROM %s c WHERE c.userId = :userId AND c.studyStatusCd = :studyStatusCd", StudyStatus.class.getName());
+		List<StudyStatus> list = (List<StudyStatus>) hibernateTemplate.findByValueBean(query, c);
+
+		return list;
+	}
+
 	/**
 	 * 유저수 개수
 	 * @param cardpackId
@@ -52,9 +62,9 @@ public class StudyStatusDao {
 	public long getCountInStudyUserCnt(String cardpackId, StudyStatusCdEnum studyStatusCd) {
 		StudyStatus c = new StudyStatus();
 		c.setCardpackId(cardpackId);
-		c.setStatusCd(studyStatusCd);
+		c.setStudyStatusCd(studyStatusCd);
 
-		String query = String.format("SELECT COUNT(*) FROM %s c WHERE c.cardpackId = :cardpackId AND c.statusCd = :statusCd", StudyStatus.class.getName());
+		String query = String.format("SELECT COUNT(*) FROM %s c WHERE c.cardpackId = :cardpackId AND c.studyStatusCd = :studyStatusCd", StudyStatus.class.getName());
 		List<Long> list = (List<Long>) hibernateTemplate.findByValueBean(query, c);
 
 		return list.get(0);

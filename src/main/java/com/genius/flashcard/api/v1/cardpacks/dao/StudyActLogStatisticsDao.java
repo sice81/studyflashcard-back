@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,9 +21,12 @@ import com.genius.flashcard.common.enums.StudyStatusCdEnum;
 @Transactional
 @Repository
 public class StudyActLogStatisticsDao {
+	public static final String CACHE = "StudyActLogStatisticsDaoCache";
+
 	@Autowired
 	HibernateTemplate hibernateTemplate;
 
+	@Cacheable(value=CACHE, key="'days_' + #userId + '_' + #startDate.getTime() + '-' + #endDate.getTime()")
 	public List<StudyActLogStatistics> findDays(String userId, Date startDate, Date endDate) {
 		List<StudyActLogStatistics> days = new ArrayList<StudyActLogStatistics>();
 
@@ -41,7 +45,7 @@ public class StudyActLogStatisticsDao {
 		sb.append("    AND c.createdDate >= :startDate");
 		sb.append("    AND c.createdDate <= :endDate");
 		sb.append("    GROUP BY YEAR(c.createdDate), MONTH(c.createdDate), DAY(c.createdDate)");
-//		sb.append("    ORDER BY 1 2 3");
+		sb.append("    ORDER BY 1, 2, 3");
 
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("userId", userId);
@@ -69,7 +73,7 @@ public class StudyActLogStatisticsDao {
 	public long getCountInStudyUserCnt(String cardpackId, StudyStatusCdEnum studyStatusCd) {
 		StudyStatus c = new StudyStatus();
 		c.setCardpackId(cardpackId);
-		c.setStatusCd(studyStatusCd);
+		c.setStudyStatusCd(studyStatusCd);
 
 		String query = String.format("SELECT COUNT(*) FROM %s c WHERE c.cardpackId = :cardpackId AND c.statusCd = :statusCd", StudyStatus.class.getName());
 		List<Long> list = (List<Long>) hibernateTemplate.findByValueBean(query, c);

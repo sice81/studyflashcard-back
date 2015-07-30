@@ -1,5 +1,6 @@
 package com.genius.flashcard.config;
 
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -7,8 +8,12 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -22,8 +27,6 @@ import com.genius.flashcard.api.v1.cardpacks.dto.StudyActLog;
 import com.genius.flashcard.api.v1.cardpacks.dto.StudyStatus;
 import com.genius.flashcard.interceptor.AuthInterceptor;
 
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.config.DiskStoreConfiguration;
 
 @Configuration
 public class AppConfig extends WebMvcConfigurerAdapter {
@@ -52,14 +55,15 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public CacheManager cacheManager() {
-		net.sf.ehcache.config.Configuration c = new net.sf.ehcache.config.Configuration();
+		return new EhCacheCacheManager(ehCacheCacheManager().getObject());
+	}
 
-		DiskStoreConfiguration diskStoreConfiguration = new DiskStoreConfiguration();
-		diskStoreConfiguration.setPath("ehcache");
-		c.diskStore(diskStoreConfiguration);
-		CacheManager cm = new CacheManager(c);
-
-		return cm;
+	@Bean
+	public EhCacheManagerFactoryBean ehCacheCacheManager() {
+		EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
+		cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
+		cmfb.setShared(true);
+		return cmfb;
 	}
 
 	@Value("${app.db.driver}")
@@ -94,6 +98,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 				.addAnnotatedClass(Cardpack.class)
 				.addAnnotatedClass(StudyStatus.class)
 				.addAnnotatedClass(StudyActLog.class)
+//				.addAnnotatedClass(StudyActLogStatistics.class)
 				.buildSessionFactory();
 
 		return sf;

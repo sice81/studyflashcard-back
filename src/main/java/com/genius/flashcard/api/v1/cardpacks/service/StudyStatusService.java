@@ -18,7 +18,7 @@ public class StudyStatusService {
 	public void save(StudyStatusParam studyStatusParam, String cardpackId, String s3Key, String userId, User user) {
 		StudyStatus studyStatus = new StudyStatus();
 		studyStatus.setUserId(userId);
-		studyStatus.setStatusCd(StudyStatusCdEnum.IN_STUDY);
+		studyStatus.setStudyStatusCd(StudyStatusCdEnum.IN_STUDY);
 		studyStatus.setWrongCnt(studyStatusParam.getWrongs().length);
 		studyStatus.setRightCnt(studyStatusParam.getRights().length);
 		studyStatus.setCardpackId(cardpackId);

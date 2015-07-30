@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -41,6 +40,7 @@ import com.genius.flashcard.api.v1.cardpacks.service.CardpackService;
 import com.genius.flashcard.api.v1.cardpacks.service.S3SendService;
 import com.genius.flashcard.api.v1.cardpacks.service.StudyStatusService;
 import com.genius.flashcard.common.enums.StudyStatusCdEnum;
+import com.genius.flashcard.utils.DateHelper;
 
 @RestController
 @RequestMapping("/api/app/v1")
@@ -64,6 +64,9 @@ public class CardpacksController {
 
 	@Autowired
 	StudyActLogDao studyActLogDao;
+
+	@Autowired
+	StudyActLogStatisticsDao studyActLogStatisticsDao;
 
 	@Autowired
 	MappingJackson2HttpMessageConverter converter;
@@ -125,9 +128,6 @@ public class CardpacksController {
 		return cardpackService.findByUserId(user.getUserId());
 	}
 
-	@Autowired
-	StudyActLogStatisticsDao studyActLogStatisticsDao;
-
 	@RequestMapping(value = "/users/{userId}/studyAct/statistics", method = RequestMethod.GET)
 	public List<Map<String, Object>> getStudyActStatistics(@PathVariable String userId,
 			@RequestParam(required = false) String startDate,
@@ -141,11 +141,14 @@ public class CardpacksController {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		DateHelper t = new DateHelper().addDate(1);
+		DateHelper d = new DateHelper(String.format("%04d%02d%02d", t.getYear(), t.getMonth(), t.getDate()));
 
-		Date d1 = sdf.parse("20100720"), d2 = sdf.parse("20190729");
+		Date eDate = d.getTime();
+		Date sDate = d.addDate(-7).getTime();
 
-		List<StudyActLogStatistics> listStat = studyActLogStatisticsDao.findDays(userId, d1, d2);
+		// -7일부터 현재시간까지
+		List<StudyActLogStatistics> listStat = studyActLogStatisticsDao.findDays(userId, sDate, eDate);
 
 		for (StudyActLogStatistics e : listStat) {
 			map = new HashMap<String, Object>();
@@ -155,17 +158,6 @@ public class CardpacksController {
 			map.put("backViewCnt", e.getBackViewCnt());
 			list.add(map);
 		}
-
-//
-//		// TODO 목업데이터 삭제할 것...
-//		for (int i=0; i<7; i++) {
-//			map = new HashMap<String, Object>();
-//			map.put("date", "2015072" + i);
-//			map.put("wrongCnt", Math.abs(new Random().nextInt() % 10));
-//			map.put("rightCnt", Math.abs(new Random().nextInt() % 10));
-//			map.put("backViewCnt", 10 + Math.abs(new Random().nextInt() % 10));
-//			list.add(map);
-//		}
 
 		return list;
 	}
@@ -185,7 +177,37 @@ public class CardpacksController {
 		return map;
 	}
 
-	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/status", method = RequestMethod.GET)
+	@RequestMapping(value = "/users/{userId}/studystatus", method = RequestMethod.GET)
+	public List<Map<String, Object>> getStudyStatusList(@PathVariable String userId,
+			@RequestParam(required=false) String studyStatus,
+			@CurrentUser User user) throws Exception {
+		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
+		Assert.isTrue(userId.length() > 0, "UserId is empty!");
+
+		StudyStatusCdEnum studyStatusCd = StudyStatusCdEnum.IN_STUDY;
+
+		if (studyStatus != null) {
+			studyStatusCd = StudyStatusCdEnum.valueOf(studyStatus);
+		}
+
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+
+		List<StudyStatus> list = studyStatusDao.find(userId, studyStatusCd);
+
+		for (StudyStatus e : list) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("cardpackName", cardpackDao.get(e.getCardpackId()).getCardpackName());
+			map.put("cardpackId", e.getCardpackId());
+			map.put("rightCnt", e.getRightCnt());
+			map.put("wrongCnt", e.getWrongCnt());
+			map.put("studyStatusCd", e.getStudyStatusCd());
+			result.add(map);
+		}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/studystatus", method = RequestMethod.GET)
 	public String getStudyStatus(@PathVariable String userId, @PathVariable String cardpackId, @CurrentUser User user)
 			throws Exception {
 		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
@@ -202,7 +224,7 @@ public class CardpacksController {
 		return result;
 	}
 
-	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/status", method = RequestMethod.PUT)
+	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/studystatus", method = RequestMethod.PUT)
 	public void putStudyStatus(@PathVariable String userId, @PathVariable String cardpackId,
 			@RequestBody StudyStatusParam studyStatusParam, @CurrentUser User user) throws Exception {
 		Assert.isTrue(cardpackService.isCanGet(cardpackId, user), "You don't have permission!");

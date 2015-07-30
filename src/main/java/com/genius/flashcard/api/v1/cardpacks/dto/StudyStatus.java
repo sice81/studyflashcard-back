@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -52,8 +54,8 @@ public class StudyStatus implements Serializable {
 	 * 학습상태코드
 	 */
 	@Type(type = BASE_PATH + "StudyStatusCdEnumType")
-	@Column(name = "STATUS_CD")
-	StudyStatusCdEnum statusCd;
+	@Column(name = "STUDY_STATUS_CD")
+	StudyStatusCdEnum studyStatusCd;
 
 	/**
 	 * S3 키
@@ -93,12 +95,12 @@ public class StudyStatus implements Serializable {
 		this.rightCnt = rightCnt;
 	}
 
-	public StudyStatusCdEnum getStatusCd() {
-		return statusCd;
+	public StudyStatusCdEnum getStudyStatusCd() {
+		return studyStatusCd;
 	}
 
-	public void setStatusCd(StudyStatusCdEnum statusCd) {
-		this.statusCd = statusCd;
+	public void setStudyStatusCd(StudyStatusCdEnum studyStatusCd) {
+		this.studyStatusCd = studyStatusCd;
 	}
 
 	public String getS3Key() {
