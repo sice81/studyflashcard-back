@@ -59,9 +59,13 @@ public class DateHelper {
 		return cal.getTime();
 	}
 
+	public String parse(String pattern) {
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		return sdf.format(getTime());
+	}
+
 	@Override
 	public String toString() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-		return sdf.format(getTime());
+		return parse("yyyy-MM-dd HH:mm:ss.SSS");
 	}
 }

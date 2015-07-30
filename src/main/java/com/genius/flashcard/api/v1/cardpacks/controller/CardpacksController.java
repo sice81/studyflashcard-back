@@ -38,6 +38,7 @@ import com.genius.flashcard.api.v1.cardpacks.param.StudyStatusParam;
 import com.genius.flashcard.api.v1.cardpacks.param.StudyStatusParam.StudyActLogParam;
 import com.genius.flashcard.api.v1.cardpacks.service.CardpackService;
 import com.genius.flashcard.api.v1.cardpacks.service.S3SendService;
+import com.genius.flashcard.api.v1.cardpacks.service.StudyActLogStatisticsService;
 import com.genius.flashcard.api.v1.cardpacks.service.StudyStatusService;
 import com.genius.flashcard.common.enums.StudyStatusCdEnum;
 import com.genius.flashcard.utils.DateHelper;
@@ -67,6 +68,10 @@ public class CardpacksController {
 
 	@Autowired
 	StudyActLogStatisticsDao studyActLogStatisticsDao;
+
+	@Autowired
+	StudyActLogStatisticsService studyActLogStatisticsService;
+
 
 	@Autowired
 	MappingJackson2HttpMessageConverter converter;
@@ -148,7 +153,7 @@ public class CardpacksController {
 		Date sDate = d.addDate(-7).getTime();
 
 		// -7일부터 현재시간까지
-		List<StudyActLogStatistics> listStat = studyActLogStatisticsDao.findDays(userId, sDate, eDate);
+		List<StudyActLogStatistics> listStat = studyActLogStatisticsService.findDays(userId, sDate, eDate);
 
 		for (StudyActLogStatistics e : listStat) {
 			map = new HashMap<String, Object>();
