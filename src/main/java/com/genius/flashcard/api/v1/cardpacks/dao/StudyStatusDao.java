@@ -7,6 +7,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -16,24 +18,27 @@ import com.genius.flashcard.common.enums.StudyStatusCdEnum;
 @Transactional
 @Repository
 public class StudyStatusDao {
+	public static final String CACHE = "StudyStatusDaoCache";
+
 	@Autowired
 	HibernateTemplate hibernateTemplate;
 
-	public String save(StudyStatus studyStatus) {
+	public String create(StudyStatus studyStatus) {
 		Serializable s = hibernateTemplate.save(studyStatus);
 		return s.toString();
 	}
 
+	@CacheEvict(key="#studyStatus.userId + '_' + #studyStatus.cardpackId")
 	public void saveOrUpdate(StudyStatus studyStatus) {
 		studyStatus.setModifiedDate(new Date());
 		hibernateTemplate.saveOrUpdate(studyStatus);
 	}
 
+	@Cacheable(value=CACHE, key="#userId + '_' + #cardpackId")
 	public StudyStatus get(String userId, String cardpackId) {
 		StudyStatus c = new StudyStatus();
 		c.setUserId(userId);
 		c.setCardpackId(cardpackId);
-//		c.setPk(new StudyStatus.PK(userId, cardpackId));
 		String query = String.format("FROM %s c WHERE c.userId = :userId AND c.cardpackId = :cardpackId", StudyStatus.class.getName());
 		List<StudyStatus> list = (List<StudyStatus>) hibernateTemplate.findByValueBean(query, c);
 
@@ -44,7 +49,7 @@ public class StudyStatusDao {
 		}
 	}
 
-	public List<StudyStatus> find(String userId, StudyStatusCdEnum studyStatusCd) {
+	public List<StudyStatus> findByUserId(String userId, StudyStatusCdEnum studyStatusCd) {
 		StudyStatus c = new StudyStatus();
 		c.setUserId(userId);
 		c.setStudyStatusCd(studyStatusCd);

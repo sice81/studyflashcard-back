@@ -197,7 +197,7 @@ public class CardpacksController {
 
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 
-		List<StudyStatus> list = studyStatusDao.find(userId, studyStatusCd);
+		List<StudyStatus> list = studyStatusDao.findByUserId(userId, studyStatusCd);
 
 		for (StudyStatus e : list) {
 			Map<String, Object> map = new HashMap<String, Object>();

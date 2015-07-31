@@ -12,8 +12,20 @@
 		timeToIdleSeconds="600"
 		memoryStoreEvictionPolicy="LRU" />
 
+	<cache name="CardpackDaoCache"
+		maxEntriesLocalHeap="1000"
+		eternal="false"
+		timeToLiveSeconds="300"
+		memoryStoreEvictionPolicy="LRU" />
+
+	<cache name="StudyStatusDaoCache"
+		maxEntriesLocalHeap="1000"
+		eternal="false"
+		timeToLiveSeconds="300"
+		memoryStoreEvictionPolicy="LRU" />
+
 	<cache name="StudyActLogStatisticsDaoCache"
-		maxEntriesLocalHeap="10000"
+		maxEntriesLocalHeap="1000"
 		eternal="false"
 		timeToLiveSeconds="1800"
 		memoryStoreEvictionPolicy="LRU" />
