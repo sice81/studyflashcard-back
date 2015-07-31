@@ -28,7 +28,7 @@ public class StudyStatusDao {
 		return s.toString();
 	}
 
-	@CacheEvict(key="#studyStatus.userId + '_' + #studyStatus.cardpackId")
+	@CacheEvict(value=CACHE, key="#studyStatus.userId + '_' + #studyStatus.cardpackId")
 	public void saveOrUpdate(StudyStatus studyStatus) {
 		studyStatus.setModifiedDate(new Date());
 		hibernateTemplate.saveOrUpdate(studyStatus);

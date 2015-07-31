@@ -26,7 +26,7 @@ public class CardpackDao {
 		return s.toString();
 	}
 
-	@CacheEvict(key="#cardpack.cardpackId")
+	@CacheEvict(value=CACHE, key="#cardpack.cardpackId")
 	public void saveOrUpdate(Cardpack cardpack) {
 		hibernateTemplate.saveOrUpdate(cardpack);
 	}
