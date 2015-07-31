@@ -172,7 +172,7 @@ public class CardpacksController {
 	public Map<String, Object> getUserCardpackDoc(@PathVariable String userId, @PathVariable String cardpackId, @CurrentUser User user)
 			throws Exception {
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
-		Assert.isTrue(cardpackService.isCanGet(cardpackId, user), "You don't have permission!");
+		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
 
 		Cardpack card = cardpackDao.get(cardpackId);
 		String signedUrl = s3SendService.getSignedUrl(card.getS3Key());
@@ -235,9 +235,9 @@ public class CardpacksController {
 	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/studystatus", method = RequestMethod.PUT)
 	public void putUserCardpackStudyStatus(@PathVariable String userId, @PathVariable String cardpackId,
 			@RequestBody StudyStatusParam studyStatusParam, @CurrentUser User user) throws Exception {
-		Assert.isTrue(cardpackService.isCanGet(cardpackId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
 		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
+		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
 
 		StudyStatus status = studyStatusDao.get(userId, cardpackId);
 		String json = converter.getObjectMapper().writeValueAsString(studyStatusParam);
@@ -274,7 +274,8 @@ public class CardpacksController {
 
 	@RequestMapping(value = "/cardpacks/{cardpackId}", method = RequestMethod.GET)
 	public Map<String, Object> getCardpack(@PathVariable String cardpackId, @CurrentUser User user) throws Exception {
-		Assert.isTrue(cardpackService.isCanGet(cardpackId, user), "You don't have permission!");
+		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
+		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
 
 		Cardpack card = cardpackDao.get(cardpackId);
 
@@ -292,7 +293,8 @@ public class CardpacksController {
 	@RequestMapping(value = "/cardpacks/{cardpackId}/doc", method = RequestMethod.GET)
 	public Map<String, Object> getCardpackDoc(@PathVariable String cardpackId, @CurrentUser User user)
 			throws Exception {
-		Assert.isTrue(cardpackService.isCanGet(cardpackId, user), "You don't have permission!");
+		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
+		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
 
 		Cardpack card = cardpackDao.get(cardpackId);
 		String signedUrl = s3SendService.getSignedUrl(card.getS3Key());

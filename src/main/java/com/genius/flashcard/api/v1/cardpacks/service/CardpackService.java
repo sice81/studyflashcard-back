@@ -32,10 +32,39 @@ public class CardpackService {
 	 * @return
 	 */
 	public boolean isCanCreate(String userId, User user) {
+		if (!userId.equals(user.getUserId())) {
+			return false;
+		}
 		return true;
 	}
 
-	public boolean isCanGet(String cardpackId, User user) {
+	public boolean isCanModify(String cardpackId, String userId, User user) {
+		if (!userId.equals(user.getUserId())) {
+			return false;
+		}
+
+		Cardpack c = cardpackDao.get(cardpackId);
+		if (!c.getOwnerUserId().equals(user.getUserId())) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public boolean isCanGet(String userId, User user) {
+		if (!userId.equals(user.getUserId())) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public boolean isCanGetCardpack(String cardpackId, User user) {
+		Cardpack c = cardpackDao.get(cardpackId);
+		if (!c.getOwnerUserId().equals(user.getUserId())) {
+			return false;
+		}
+
 		return true;
 	}
 
