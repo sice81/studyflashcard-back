@@ -80,12 +80,12 @@ public class CardpacksController {
 	String APP_STEP;
 
 	@RequestMapping(value = "/users/{userId}/cardpacks", method = RequestMethod.POST)
-	public Map<String, Object> create(@PathVariable String userId, @RequestBody CardpackParam cardpackParam,
+	public Map<String, Object> postCardpack(@PathVariable String userId, @RequestBody CardpackParam cardpackParam,
 			@CurrentUser User user, HttpServletResponse res) throws Exception {
-		Assert.isTrue(cardpackService.isCanCreate(userId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
 		Assert.isTrue(cardpackParam.getCardpackName().length() > 0, "Name is empty!");
 		Assert.isTrue(cardpackParam.getDocData().length() > 0, "Name is empty!");
+		Assert.isTrue(cardpackService.isCanCreate(userId, user), "You don't have permission!");
 
 		String yyyyMm = new SimpleDateFormat("yyyyMM").format(new Date());
 		String dd = new SimpleDateFormat("dd").format(new Date());
@@ -106,13 +106,13 @@ public class CardpacksController {
 	}
 
 	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}", method = RequestMethod.PUT)
-	public Map<String, Object> put(@PathVariable String userId, @PathVariable String cardpackId,
+	public Map<String, Object> putCardpack(@PathVariable String userId, @PathVariable String cardpackId,
 			@RequestBody CardpackParam cardpackParam, @CurrentUser User user, HttpServletResponse res)
 					throws Exception {
-		Assert.isTrue(cardpackService.isCanCreate(userId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
 		Assert.isTrue(cardpackParam.getCardpackName().length() > 0, "Name is empty!");
 		Assert.isTrue(cardpackParam.getDocData().length() > 0, "Name is empty!");
+		Assert.isTrue(cardpackService.isCanModify(cardpackId, userId, user), "You don't have permission!");
 
 		Cardpack c = cardpackDao.get(cardpackId);
 		s3SendService.send(cardpackParam.getDocData(), c.getS3Key());
@@ -126,9 +126,9 @@ public class CardpacksController {
 	}
 
 	@RequestMapping(value = "/users/{userId}/cardpacks", method = RequestMethod.GET)
-	public List<Cardpack> getUserCardpacks(@PathVariable String userId, @CurrentUser User user) throws Exception {
-		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
+	public List<Cardpack> getUserCardpackList(@PathVariable String userId, @CurrentUser User user) throws Exception {
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
+		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
 
 		return cardpackService.findByUserId(user.getUserId());
 	}
@@ -140,8 +140,8 @@ public class CardpacksController {
 			@RequestParam(required = false) String date,
 			@RequestParam(defaultValue="day") String type,
 			@CurrentUser User user) throws Exception {
-		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
+		Assert.isTrue(cardpackService.isCanGet(userId, user), "You don't have permission!");
 
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -169,10 +169,10 @@ public class CardpacksController {
 
 
 	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/doc", method = RequestMethod.GET)
-	public Map<String, Object> get(@PathVariable String userId, @PathVariable String cardpackId, @CurrentUser User user)
+	public Map<String, Object> getUserCardpackDoc(@PathVariable String userId, @PathVariable String cardpackId, @CurrentUser User user)
 			throws Exception {
-		Assert.isTrue(cardpackService.isCanGet(cardpackId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
+		Assert.isTrue(cardpackService.isCanGet(cardpackId, user), "You don't have permission!");
 
 		Cardpack card = cardpackDao.get(cardpackId);
 		String signedUrl = s3SendService.getSignedUrl(card.getS3Key());
@@ -233,7 +233,7 @@ public class CardpacksController {
 	}
 
 	@RequestMapping(value = "/users/{userId}/cardpacks/{cardpackId}/studystatus", method = RequestMethod.PUT)
-	public void putStudyStatus(@PathVariable String userId, @PathVariable String cardpackId,
+	public void putUserCardpackStudyStatus(@PathVariable String userId, @PathVariable String cardpackId,
 			@RequestBody StudyStatusParam studyStatusParam, @CurrentUser User user) throws Exception {
 		Assert.isTrue(cardpackService.isCanGet(cardpackId, user), "You don't have permission!");
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
