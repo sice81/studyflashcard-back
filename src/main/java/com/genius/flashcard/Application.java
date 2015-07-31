@@ -19,13 +19,13 @@ import com.genius.flashcard.api.auth.dao.UserDao;
 @EnableAutoConfiguration
 @EnableCaching
 //@SpringBootApplication
-public class App {
+public class Application {
 	@Autowired
 	UserDao userDao;
 
     public static void main(String[] args) throws SQLException {
 //    	Console.main();
-        SpringApplication.run(App.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
     @PostConstruct
