@@ -1,10 +1,11 @@
-	package com.genius.flashcard.api.v1.cardpacks.dto;
+package com.genius.flashcard.api.v1.cardpacks.dto;
 
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -29,9 +30,9 @@ public class Cardpack {
 	 * 카드팩ID
 	 */
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "CARDPACK_ID")
-	long cardpackId;
+	String cardpackId;
 
 	/**
 	 * 문서버전
@@ -107,11 +108,11 @@ public class Cardpack {
 	@Column(name = "IS_DELETE")
 	boolean isDelete;
 
-	public long getCardpackId() {
+	public String getCardpackId() {
 		return cardpackId;
 	}
 
-	public void setCardpackId(long cardpackId) {
+	public void setCardpackId(String cardpackId) {
 		this.cardpackId = cardpackId;
 	}
 

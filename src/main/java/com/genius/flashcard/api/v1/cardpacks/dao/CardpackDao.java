@@ -33,7 +33,7 @@ public class CardpackDao {
 
 	@Cacheable(value=CACHE, key="#cardpackId")
 	public Cardpack get(String cardpackId) {
-		return hibernateTemplate.get(Cardpack.class, Long.parseLong(cardpackId));
+		return hibernateTemplate.get(Cardpack.class, cardpackId);
 	}
 
 	@SuppressWarnings("unchecked")

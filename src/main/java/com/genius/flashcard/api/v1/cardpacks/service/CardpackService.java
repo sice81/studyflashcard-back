@@ -92,7 +92,7 @@ public class CardpackService {
 	public void save(CardpackParam cardpackParam, String cardpackId, String userId, User user) throws Exception {
 		Cardpack c = new Cardpack();
 
-		c.setCardpackId(Long.parseLong(cardpackId));
+		c.setCardpackId(cardpackId);
 		c.setCardpackName(cardpackParam.getCardpackName());
 //		c.setDocData(cardpackParam.getDocData());
 		c.setDocVer("1.0");
