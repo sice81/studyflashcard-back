@@ -3,3 +3,5 @@
 .gradle
 /db/
 /ehcache/
+/src/main/resources/application.properties
+/src/main/resources/hibernate.properties
