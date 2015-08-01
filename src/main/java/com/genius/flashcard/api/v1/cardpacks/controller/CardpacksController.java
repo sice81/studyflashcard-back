@@ -40,6 +40,7 @@ import com.genius.flashcard.api.v1.cardpacks.service.CardpackService;
 import com.genius.flashcard.api.v1.cardpacks.service.S3Service;
 import com.genius.flashcard.api.v1.cardpacks.service.StudyActLogStatisticsService;
 import com.genius.flashcard.api.v1.cardpacks.service.StudyStatusService;
+import com.genius.flashcard.common.enums.CardpackAccessCdEnum;
 import com.genius.flashcard.common.enums.StudyStatusCdEnum;
 import com.genius.flashcard.utils.DateHelper;
 
@@ -280,15 +281,35 @@ public class CardpacksController {
 
 		Cardpack cardpack = cardpackDao.get(cardpackId);
 
+		boolean isOwner = cardpack.getOwnerUserId().equals(user.getUserId());
+		boolean isShowDoc = false;
+
+		if (isOwner) {
+			isShowDoc = true;
+		} else {
+			if (cardpack.getCardpackAccessCd() == CardpackAccessCdEnum.PUBLIC) {
+				isShowDoc = true;
+			}
+		}
+
+		Assert.isTrue(isShowDoc, "You can't see this doc.");
+
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("cardpackName", cardpack.getCardpackName());
-		map.put("ownerUserName", user.getUserName());
-		map.put("ownerUserId", cardpack.getOwnerUserId());
-		map.put("ownerUserPicture", user.getProfilePictureUrl());
-		map.put("cardCnt", cardpack.getCardCnt());
-		map.put("inStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.IN_STUDY));
-		map.put("completeStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.COMPLETE));
-		map.put("cardpackAccessCd", cardpack.getCardpackAccessCd());
+
+		if (isOwner) {
+			map.put("cardpackName", cardpack.getCardpackName());
+			map.put("ownerUserName", user.getUserName());
+			map.put("ownerUserId", cardpack.getOwnerUserId());
+			map.put("ownerUserPicture", user.getProfilePictureUrl());
+			map.put("cardCnt", cardpack.getCardCnt());
+			map.put("inStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.IN_STUDY));
+			map.put("completeStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.COMPLETE));
+			map.put("cardpackAccessCd", cardpack.getCardpackAccessCd());
+			map.put("isExposureStore", cardpack.isExposureStore());
+			map.put("isAllowCopy", cardpack.isAllowCopy());
+		} else {
+			map.put("cardpackAccessCd", cardpack.getCardpackAccessCd());
+		}
 
 		// 갱신
 		cardpack.setLastAccessDate(new Date());
@@ -304,9 +325,21 @@ public class CardpacksController {
 		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
 
 		Cardpack cardpack = cardpackDao.get(cardpackId);
-		String signedUrl = s3SendService.getSignedUrl(cardpack.getS3Key());
+		boolean isOwner = cardpack.getOwnerUserId().equals(user.getUserId());
+		boolean isShowDoc = false;
+
+		if (isOwner) {
+			isShowDoc = true;
+		} else {
+			if (cardpack.getCardpackAccessCd() == CardpackAccessCdEnum.PUBLIC) {
+				isShowDoc = true;
+			}
+		}
+
+		Assert.isTrue(isShowDoc, "You can't see this doc.");
 
 		Map<String, Object> map = new HashMap<String, Object>();
+		String signedUrl = s3SendService.getSignedUrl(cardpack.getS3Key());
 		map.put("docVer", cardpack.getDocVer());
 		map.put("s3Url", signedUrl);
 

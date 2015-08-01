@@ -2,6 +2,8 @@ package com.genius.flashcard.api.v1.cardpacks.param;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class CardpackParam {
 	/**
@@ -15,7 +17,24 @@ public class CardpackParam {
 	String docData;
 
 	/**
-	 * S3 클라우드 키
+	 * 사본허용여부
+	 */
+	@JsonProperty(value = "isAllowCopy")
+	boolean isAllowCopy;
+
+	/**
+	 * 스토어노출여부
+	 */
+	@JsonProperty(value = "isExposureStore")
+	boolean isExposureStore;
+
+	/**
+	 * 카드팩 공개코드
+	 */
+	String cardpackAccessCd;
+
+	/**
+	 * S3 클라우드 키 - 파라미터로 받지 않음... 나중에 다른데로 옮길것...
 	 */
 	String s3Key;
 
@@ -43,4 +62,27 @@ public class CardpackParam {
 		this.s3Key = s3Key;
 	}
 
+	public boolean isAllowCopy() {
+		return isAllowCopy;
+	}
+
+	public void setAllowCopy(boolean isAllowCopy) {
+		this.isAllowCopy = isAllowCopy;
+	}
+
+	public boolean isExposureStore() {
+		return isExposureStore;
+	}
+
+	public void setExposureStore(boolean isExposureStore) {
+		this.isExposureStore = isExposureStore;
+	}
+
+	public String getCardpackAccessCd() {
+		return cardpackAccessCd;
+	}
+
+	public void setCardpackAccessCd(String cardpackAccessCd) {
+		this.cardpackAccessCd = cardpackAccessCd;
+	}
 }

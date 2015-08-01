@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -53,6 +52,18 @@ public class Cardpack {
 	 */
 	@Column(name = "OWNER_USER_ID", length = 50, nullable = false)
 	String ownerUserId;
+
+	/**
+	 * 스토어노출여부
+	 */
+	@Column(name = "IS_EXPOSURE_STORE")
+	boolean isExposureStore = false;
+
+	/**
+	 * 사본허용여부
+	 */
+	@Column(name = "IS_ALLOW_COPY")
+	boolean isAllowCopy = false;
 
 	/**
 	 * 다운로드수
@@ -212,5 +223,21 @@ public class Cardpack {
 
 	public void setDelete(boolean isDelete) {
 		this.isDelete = isDelete;
+	}
+
+	public boolean isExposureStore() {
+		return isExposureStore;
+	}
+
+	public void setExposureStore(boolean isExposureStore) {
+		this.isExposureStore = isExposureStore;
+	}
+
+	public boolean isAllowCopy() {
+		return isAllowCopy;
+	}
+
+	public void setAllowCopy(boolean isAllowCopy) {
+		this.isAllowCopy = isAllowCopy;
 	}
 }

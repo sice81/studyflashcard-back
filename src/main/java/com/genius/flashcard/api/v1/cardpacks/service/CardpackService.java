@@ -86,8 +86,11 @@ public class CardpackService {
 		c.setOwnerUserId(user.getUserId());
 		c.setCreatedDate(new Date());
 		c.setS3Key(cardpackParam.getS3Key());
-		c.setCardpackAccessCd(CardpackAccessCdEnum.PUBLIC);
+
 		c.setCardpackStatusCd(CardpackStatusCdEnum.IN_PROGRESS);
+		c.setCardpackAccessCd(CardpackAccessCdEnum.valueOf(cardpackParam.getCardpackAccessCd()));
+		c.setExposureStore(cardpackParam.isExposureStore());
+		c.setAllowCopy(cardpackParam.isAllowCopy());
 
 		return cardpackDao.insert(c);
 	}
@@ -97,12 +100,15 @@ public class CardpackService {
 
 		c.setCardpackId(cardpackId);
 		c.setCardpackName(cardpackParam.getCardpackName());
-//		c.setDocData(cardpackParam.getDocData());
 		c.setDocVer("1.0");
 		c.setCardCnt(getCardCnt(cardpackParam.getDocData()));
 		c.setOwnerUserId(user.getUserId());
 		c.setCreatedDate(new Date());
 		c.setS3Key(cardpackParam.getS3Key());
+
+		c.setCardpackAccessCd(CardpackAccessCdEnum.valueOf(cardpackParam.getCardpackAccessCd()));
+		c.setExposureStore(cardpackParam.isExposureStore());
+		c.setAllowCopy(cardpackParam.isAllowCopy());
 
 		cardpackDao.update(c);
 	}
