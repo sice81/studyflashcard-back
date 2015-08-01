@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.genius.flashcard.annotation.CurrentUser;
+import com.genius.flashcard.api.auth.dao.UserDao;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.v1.cardpacks.dao.CardpackDao;
 import com.genius.flashcard.api.v1.cardpacks.dao.StudyActLogDao;
@@ -48,6 +49,9 @@ import com.genius.flashcard.utils.DateHelper;
 @RequestMapping("/api/app/v1")
 public class CardpacksController {
 	Logger logger = Logger.getLogger(this.getClass().getName());
+
+	@Autowired
+	UserDao userDao;
 
 	@Autowired
 	CardpackService cardpackService;
@@ -277,43 +281,43 @@ public class CardpacksController {
 	@RequestMapping(value = "/cardpacks/{cardpackId}", method = RequestMethod.GET)
 	public Map<String, Object> getCardpack(@PathVariable String cardpackId, @CurrentUser User user) throws Exception {
 		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
-		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
+//		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
 
 		Cardpack cardpack = cardpackDao.get(cardpackId);
 
 		boolean isOwner = cardpack.getOwnerUserId().equals(user.getUserId());
-		boolean isShowDoc = false;
+		boolean isCanShow = false;
 
 		if (isOwner) {
-			isShowDoc = true;
+			isCanShow = true;
 		} else {
 			if (cardpack.getCardpackAccessCd() == CardpackAccessCdEnum.PUBLIC) {
-				isShowDoc = true;
+				isCanShow = true;
 			}
 		}
 
-		Assert.isTrue(isShowDoc, "You can't see this doc.");
-
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		if (isOwner) {
+		if (isCanShow) {
+			User ownerUser = userDao.get(cardpack.getOwnerUserId());
+
 			map.put("cardpackName", cardpack.getCardpackName());
-			map.put("ownerUserName", user.getUserName());
+			map.put("ownerUserName", ownerUser.getUserName());
 			map.put("ownerUserId", cardpack.getOwnerUserId());
-			map.put("ownerUserPicture", user.getProfilePictureUrl());
+			map.put("ownerUserPicture", ownerUser.getProfilePictureUrl());
 			map.put("cardCnt", cardpack.getCardCnt());
 			map.put("inStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.IN_STUDY));
 			map.put("completeStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.COMPLETE));
 			map.put("cardpackAccessCd", cardpack.getCardpackAccessCd());
 			map.put("isExposureStore", cardpack.isExposureStore());
 			map.put("isAllowCopy", cardpack.isAllowCopy());
+
+			// 갱신
+			cardpack.setLastAccessDate(new Date());
+			cardpackDao.updateWithoutEvict(cardpack);
 		} else {
 			map.put("cardpackAccessCd", cardpack.getCardpackAccessCd());
 		}
-
-		// 갱신
-		cardpack.setLastAccessDate(new Date());
-		cardpackDao.updateWithoutEvict(cardpack);
 
 		return map;
 	}
@@ -322,21 +326,21 @@ public class CardpacksController {
 	public Map<String, Object> getCardpackDoc(@PathVariable String cardpackId, @CurrentUser User user)
 			throws Exception {
 		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
-		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
+//		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
 
 		Cardpack cardpack = cardpackDao.get(cardpackId);
 		boolean isOwner = cardpack.getOwnerUserId().equals(user.getUserId());
-		boolean isShowDoc = false;
+		boolean isCanShow = false;
 
 		if (isOwner) {
-			isShowDoc = true;
+			isCanShow = true;
 		} else {
 			if (cardpack.getCardpackAccessCd() == CardpackAccessCdEnum.PUBLIC) {
-				isShowDoc = true;
+				isCanShow = true;
 			}
 		}
 
-		Assert.isTrue(isShowDoc, "You can't see this doc.");
+		Assert.isTrue(isCanShow, "You can't see this doc.");
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		String signedUrl = s3SendService.getSignedUrl(cardpack.getS3Key());
