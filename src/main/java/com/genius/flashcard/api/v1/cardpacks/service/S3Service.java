@@ -22,7 +22,7 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 
 @Service
-public class S3SendService {
+public class S3Service {
 	@Value("${s3.accessKey}")
 	String accessKey;
 
@@ -32,9 +32,9 @@ public class S3SendService {
 	@Value("${s3.bucketName}")
 	String bucketName;
 
-	public void send(String doc, String keyName) throws Exception {
+	public boolean sendDoc(String doc, String keyName) throws Exception {
+		boolean result = false;
 		TransferManager tm = new TransferManager(new BasicAWSCredentials(accessKey, secretKey));
-
 		InputStream is = null;
 
 		try {
@@ -45,6 +45,7 @@ public class S3SendService {
 			Upload upload = tm.upload(bucketName, keyName, is, meta);
 			upload.waitForCompletion();
 			System.out.println("Upload complete.");
+			result = true;
 		} catch (AmazonClientException amazonClientException) {
 			System.out.println("Unable to upload file, upload was aborted.");
 			amazonClientException.printStackTrace();
@@ -53,6 +54,8 @@ public class S3SendService {
 				is.close();
 			}
 		}
+
+		return result;
 	}
 
 	public String get(String keyName) throws Exception {

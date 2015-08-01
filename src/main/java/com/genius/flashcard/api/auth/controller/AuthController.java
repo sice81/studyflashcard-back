@@ -19,7 +19,7 @@ import com.genius.flashcard.api.auth.dao.UserDao;
 import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.auth.service.FacebookValidateService;
 import com.genius.flashcard.api.auth.service.FacebookValidateService.FacebookUserResDto;
-import com.genius.flashcard.api.v1.cardpacks.service.S3SendService;
+import com.genius.flashcard.api.v1.cardpacks.service.S3Service;
 import com.genius.flashcard.auth.TokenService;
 import com.genius.flashcard.common.enums.UserAccountTypeEnum;
 import com.genius.flashcard.common.enums.UserStatusEnum;

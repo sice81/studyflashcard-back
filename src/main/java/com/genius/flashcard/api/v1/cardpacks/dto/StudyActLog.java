@@ -29,14 +29,14 @@ public class StudyActLog implements Serializable {
 	 * 유저ID
 	 */
 	@Id
-	@Column(name = "USER_ID")
+	@Column(name = "USER_ID", length = 50)
 	String userId;
 
 	/**
 	 * 카드팩ID
 	 */
 	@Id
-	@Column(name = "CARDPACK_ID")
+	@Column(name = "CARDPACK_ID", length = 20)
 	String cardpackId;
 
 	/**
@@ -49,19 +49,19 @@ public class StudyActLog implements Serializable {
 	/**
 	 * 틀림수
 	 */
-	@Column(name = "WRONG_CNT")
+	@Column(name = "WRONG_CNT", length = 5)
 	int wrongCnt = 0;
 
 	/**
 	 * 맞음수
 	 */
-	@Column(name = "RIGHT_CNT")
+	@Column(name = "RIGHT_CNT", length = 5)
 	int rightCnt = 0;
 
 	/**
 	 * 후면 보기횟수
 	 */
-	@Column(name = "BACK_VIEW_CNT")
+	@Column(name = "BACK_VIEW_CNT", length = 5)
 	int backViewCnt = 0;
 
 	public String getUserId() {

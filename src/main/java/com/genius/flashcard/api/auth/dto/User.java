@@ -19,27 +19,27 @@ public class User {
 	private static final String BASE_PATH = "com.genius.flashcard.hibernate.type.";
 
 	@Id
-	@Column(name = "USER_ID")
+	@Column(name = "USER_ID", length = 50)
 	String userId;
 
-	@Column(name = "USER_NAME")
+	@Column(name = "USER_NAME", length = 500)
 	String userName;
 
 	@Type(type = BASE_PATH + "UserAccountTypeEnumType")
-	@Column(name = "USER_ACCOUNT_TYPE_CD")
+	@Column(name = "USER_ACCOUNT_TYPE_CD", length = 20)
 	UserAccountTypeEnum userAccountType;
 
 	@Type(type = BASE_PATH + "UserStatusEnumType")
-	@Column(name = "USER_STATUS_CD")
+	@Column(name = "USER_STATUS_CD", length = 20)
 	UserStatusEnum userStatus;
 
-	@Column(name = "EXTERN_USER_ID")
+	@Column(name = "EXTERN_USER_ID", length = 500)
 	String externUserId;
 
-	@Column(name = "USER_EMAIL")
+	@Column(name = "USER_EMAIL", length = 500)
 	String userEmail;
 
-	@Column(name = "PASSWORD")
+	@Column(name = "PASSWORD", length = 500)
 	String password;
 
 	@Column(name = "CREATED_DATE")

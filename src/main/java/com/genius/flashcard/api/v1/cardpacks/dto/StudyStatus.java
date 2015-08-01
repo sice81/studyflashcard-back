@@ -30,36 +30,36 @@ public class StudyStatus implements Serializable {
 	private static final String BASE_PATH = "com.genius.flashcard.hibernate.type.";
 
 	@Id
-	@Column(name = "USER_ID")
+	@Column(name = "USER_ID", length = 50)
 	String userId;
 
 	@Id
-	@Column(name = "CARDPACK_ID")
+	@Column(name = "CARDPACK_ID", length = 20)
 	String cardpackId;
 
 	/**
 	 * 틀림수
 	 */
-	@Column(name = "WRONG_CNT")
+	@Column(name = "WRONG_CNT", length = 5)
 	int wrongCnt = 0;
 
 	/**
 	 * 맞음수
 	 */
-	@Column(name = "RIGHT_CNT")
+	@Column(name = "RIGHT_CNT", length = 5)
 	int rightCnt = 0;
 
 	/**
 	 * 학습상태코드
 	 */
 	@Type(type = BASE_PATH + "StudyStatusCdEnumType")
-	@Column(name = "STUDY_STATUS_CD")
+	@Column(name = "STUDY_STATUS_CD", length = 20)
 	StudyStatusCdEnum studyStatusCd;
 
 	/**
 	 * S3 키
 	 */
-	@Column(name = "S3_KEY")
+	@Column(name = "S3_KEY", length = 500)
 	String s3Key;
 
 	/**
