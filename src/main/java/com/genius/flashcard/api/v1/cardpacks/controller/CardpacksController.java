@@ -37,7 +37,7 @@ import com.genius.flashcard.api.v1.cardpacks.param.CardpackParam;
 import com.genius.flashcard.api.v1.cardpacks.param.StudyStatusParam;
 import com.genius.flashcard.api.v1.cardpacks.param.StudyStatusParam.StudyActLogParam;
 import com.genius.flashcard.api.v1.cardpacks.service.CardpackService;
-import com.genius.flashcard.api.v1.cardpacks.service.S3SendService;
+import com.genius.flashcard.api.v1.cardpacks.service.S3Service;
 import com.genius.flashcard.api.v1.cardpacks.service.StudyActLogStatisticsService;
 import com.genius.flashcard.api.v1.cardpacks.service.StudyStatusService;
 import com.genius.flashcard.common.enums.StudyStatusCdEnum;
@@ -55,7 +55,7 @@ public class CardpacksController {
 	CardpackDao cardpackDao;
 
 	@Autowired
-	S3SendService s3SendService;
+	S3Service s3SendService;
 
 	@Autowired
 	StudyStatusDao studyStatusDao;
@@ -91,7 +91,8 @@ public class CardpacksController {
 		String dd = new SimpleDateFormat("dd").format(new Date());
 		String dir = "Cardpacks/" + yyyyMm + "/" + dd;
 		String keyName = String.format("%s/%s", dir, UUID.randomUUID().toString());
-		s3SendService.send(cardpackParam.getDocData(), keyName);
+
+		Assert.isTrue(s3SendService.sendDoc(cardpackParam.getDocData(), keyName), "Upload failed!");
 
 		cardpackParam.setS3Key(keyName);
 		String cardpackId = cardpackService.create(cardpackParam, userId, user);
@@ -115,7 +116,7 @@ public class CardpacksController {
 		Assert.isTrue(cardpackService.isCanModify(cardpackId, userId, user), "You don't have permission!");
 
 		Cardpack c = cardpackDao.get(cardpackId);
-		s3SendService.send(cardpackParam.getDocData(), c.getS3Key());
+		Assert.isTrue(s3SendService.sendDoc(cardpackParam.getDocData(), c.getS3Key()), "Upload failed!");
 
 		cardpackParam.setS3Key(c.getS3Key());
 		cardpackService.save(cardpackParam, cardpackId, userId, user);
@@ -252,7 +253,7 @@ public class CardpacksController {
 			}
 		}
 
-		s3SendService.send(json, keyName);
+		s3SendService.sendDoc(json, keyName);
 
 		studyStatusService.save(studyStatusParam, cardpackId, keyName, userId, user);
 

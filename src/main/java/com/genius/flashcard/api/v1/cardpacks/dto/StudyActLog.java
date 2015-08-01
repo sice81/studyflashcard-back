@@ -17,27 +17,13 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "STUDY_ACT_LOG") // , indexes = @Index(columnList = "USER_ID") )
+@Table(name = "STUDY_ACT_LOG")
 public class StudyActLog implements Serializable {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 2837235471871053517L;
-
-	/**
-	 * 유저ID
-	 */
-	@Id
-	@Column(name = "USER_ID")
-	String userId;
-
-	/**
-	 * 카드팩ID
-	 */
-	@Id
-	@Column(name = "CARDPACK_ID")
-	String cardpackId;
 
 	/**
 	 * 생성일시
@@ -47,21 +33,35 @@ public class StudyActLog implements Serializable {
 	Date createdDate;
 
 	/**
+	 * 유저ID
+	 */
+	@Id
+	@Column(name = "USER_ID", length = 50)
+	String userId;
+
+	/**
+	 * 카드팩ID
+	 */
+	@Id
+	@Column(name = "CARDPACK_ID", length = 20)
+	String cardpackId;
+
+	/**
 	 * 틀림수
 	 */
-	@Column(name = "WRONG_CNT")
+	@Column(name = "WRONG_CNT", length = 5)
 	int wrongCnt = 0;
 
 	/**
 	 * 맞음수
 	 */
-	@Column(name = "RIGHT_CNT")
+	@Column(name = "RIGHT_CNT", length = 5)
 	int rightCnt = 0;
 
 	/**
 	 * 후면 보기횟수
 	 */
-	@Column(name = "BACK_VIEW_CNT")
+	@Column(name = "BACK_VIEW_CNT", length = 5)
 	int backViewCnt = 0;
 
 	public String getUserId() {

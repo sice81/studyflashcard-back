@@ -19,28 +19,31 @@ public class User {
 	private static final String BASE_PATH = "com.genius.flashcard.hibernate.type.";
 
 	@Id
-	@Column(name = "USER_ID")
+	@Column(name = "USER_ID", length = 50)
 	String userId;
 
-	@Column(name = "USER_NAME")
+	@Column(name = "PASSWORD", length = 500)
+	String password;
+
+	@Column(name = "USER_NAME", length = 500)
 	String userName;
 
+	@Column(name = "USER_EMAIL", length = 500)
+	String userEmail;
+
+	@Column(name = "PROFILE_PIC_URL", length = 4000)
+	String profilePictureUrl;
+
 	@Type(type = BASE_PATH + "UserAccountTypeEnumType")
-	@Column(name = "USER_ACCOUNT_TYPE_CD")
+	@Column(name = "USER_ACCOUNT_TYPE_CD", length = 20)
 	UserAccountTypeEnum userAccountType;
 
 	@Type(type = BASE_PATH + "UserStatusEnumType")
-	@Column(name = "USER_STATUS_CD")
+	@Column(name = "USER_STATUS_CD", length = 20)
 	UserStatusEnum userStatus;
 
-	@Column(name = "EXTERN_USER_ID")
+	@Column(name = "EXTERN_USER_ID", length = 500)
 	String externUserId;
-
-	@Column(name = "USER_EMAIL")
-	String userEmail;
-
-	@Column(name = "PASSWORD")
-	String password;
 
 	@Column(name = "CREATED_DATE")
 	Date createdDate;
@@ -53,12 +56,36 @@ public class User {
 		this.userId = userId;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getUserName() {
 		return userName;
 	}
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
+	public String getProfilePictureUrl() {
+		return profilePictureUrl;
+	}
+
+	public void setProfilePictureUrl(String profilePictureUrl) {
+		this.profilePictureUrl = profilePictureUrl;
 	}
 
 	public UserAccountTypeEnum getUserAccountType() {
@@ -85,22 +112,6 @@ public class User {
 		this.externUserId = externUserId;
 	}
 
-	public String getUserEmail() {
-		return userEmail;
-	}
-
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -108,5 +119,4 @@ public class User {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-
 }

@@ -5,10 +5,11 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import com.genius.flashcard.common.enums.CardpackAccessCdEnum;
@@ -30,52 +31,53 @@ public class Cardpack {
 	 * 카드팩ID
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "CARDPACK_ID")
+	@Column(name = "CARDPACK_ID", length = 20, unique = true, nullable = false)
+	@GenericGenerator(name = "seq_id", strategy = "com.genius.flashcard.api.v1.cardpacks.dao.StringKeyGenerator")
+	@GeneratedValue(generator = "seq_id")
 	String cardpackId;
 
 	/**
 	 * 문서버전
 	 */
-	@Column(name = "DOC_VER")
+	@Column(name = "DOC_VER", length = 10)
 	String docVer;
 
 	/**
 	 * 카드팩명
 	 */
-	@Column(name = "CARDPACK_NAME", nullable = false)
+	@Column(name = "CARDPACK_NAME", length = 4000, nullable = false)
 	String cardpackName;
 
 	/**
 	 * 소유유저ID
 	 */
-	@Column(name = "OWNER_USER_ID", nullable = false)
+	@Column(name = "OWNER_USER_ID", length = 50, nullable = false)
 	String ownerUserId;
 
 	/**
 	 * 다운로드수
 	 */
-	@Column(name = "DOWNLOAD_CNT")
+	@Column(name = "DOWNLOAD_CNT", length = 10)
 	long downloadCnt = 0;
 
 	/**
 	 * 상태코드
 	 */
 	@Type(type = BASE_PATH + "CardpackStatusCdEnumType")
-	@Column(name = "CARDPACK_STATUS_CD")
+	@Column(name = "CARDPACK_STATUS_CD", length = 20)
 	CardpackStatusCdEnum statusCd;
 
 	/**
 	 * 접근권한코드
 	 */
-	@Column(name = "CARDPACK_ACCESS_CD")
+	@Column(name = "CARDPACK_ACCESS_CD", length = 20)
 	@Type(type = BASE_PATH + "CardpackAccessCdEnumType")
 	CardpackAccessCdEnum accessCd;
 
 	/**
 	 * 카드팩 카테고리 ID
 	 */
-	@Column(name = "CARDPACK_CATEGORY_ID")
+	@Column(name = "CARDPACK_CATEGORY_ID", length = 20)
 	String cardpackCategoryId;
 
 	/**
@@ -93,13 +95,13 @@ public class Cardpack {
 	/**
 	 * S3 키
 	 */
-	@Column(name = "S3_KEY")
+	@Column(name = "S3_KEY", length = 500)
 	String s3Key;
 
 	/**
 	 * 카드개수
 	 */
-	@Column(name = "CARD_CNT")
+	@Column(name = "CARD_CNT", length = 5)
 	int cardCnt = 0;
 
 	/**
