@@ -59,11 +59,13 @@ public class AuthController {
 
 		FacebookUserResDto result = facebookValidateService.getUser(accessToken, userId);
 
+		// 페이스북 인증이 올바른 경우
 		if (result != null) {
 			User user;
 
-			user = userDao.getUser(MessageDigestUtil.getMD58(result.getEmail()));
+			user = userDao.get(MessageDigestUtil.getMD58(result.getEmail()));
 
+			// 유저 정보가 없는 경우 생성
 			if (user == null) {
 				Assert.isTrue(result.getId() != null, "Id is null!");
 				Assert.isTrue(result.getName() != null, "Name is null!");
@@ -79,7 +81,11 @@ public class AuthController {
 				user.setUserStatus(UserStatusEnum.ACTIVE);
 				user.setExternUserId(userId);
 				user.setCreatedDate(new Date());
-				userDao.saveUser(user);
+				user.setLastConnectedDate(new Date());
+				userDao.insert(user);
+			} else {
+				user.setLastConnectedDate(new Date());
+				userDao.update(user);
 			}
 
 			map.put("result", true);
