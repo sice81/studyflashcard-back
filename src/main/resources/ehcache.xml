@@ -10,24 +10,40 @@
 		maxEntriesLocalHeap="10000"
 		eternal="false"
 		timeToIdleSeconds="600"
-		memoryStoreEvictionPolicy="LRU" />
+		memoryStoreEvictionPolicy="LRU" >
+		<cacheEventListenerFactory class="com.genius.flashcard.ehcache.NotNullCacheEventListenerFactory" />
+	</cache>
+
+	<cache name="UserDaoCache"
+		maxEntriesLocalHeap="1000"
+		eternal="false"
+		timeToLiveSeconds="300"
+		memoryStoreEvictionPolicy="LRU" >
+		<cacheEventListenerFactory class="com.genius.flashcard.ehcache.NotNullCacheEventListenerFactory" />
+	</cache>
 
 	<cache name="CardpackDaoCache"
 		maxEntriesLocalHeap="1000"
 		eternal="false"
 		timeToLiveSeconds="300"
-		memoryStoreEvictionPolicy="LRU" />
+		memoryStoreEvictionPolicy="LRU" >
+		<cacheEventListenerFactory class="com.genius.flashcard.ehcache.NotNullCacheEventListenerFactory" />
+	</cache>
 
 	<cache name="StudyStatusDaoCache"
 		maxEntriesLocalHeap="1000"
 		eternal="false"
 		timeToLiveSeconds="300"
-		memoryStoreEvictionPolicy="LRU" />
+		memoryStoreEvictionPolicy="LRU" >
+		<cacheEventListenerFactory class="com.genius.flashcard.ehcache.NotNullCacheEventListenerFactory" />
+	</cache>
 
 	<cache name="StudyActLogStatisticsDaoCache"
 		maxEntriesLocalHeap="1000"
 		eternal="false"
 		timeToLiveSeconds="1800"
-		memoryStoreEvictionPolicy="LRU" />
+		memoryStoreEvictionPolicy="LRU" >
+		<cacheEventListenerFactory class="com.genius.flashcard.ehcache.NotNullCacheEventListenerFactory" />
+	</cache>
 
 </ehcache>
