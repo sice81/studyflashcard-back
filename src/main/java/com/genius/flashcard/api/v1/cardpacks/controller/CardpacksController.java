@@ -278,17 +278,21 @@ public class CardpacksController {
 		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
 		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
 
-		Cardpack card = cardpackDao.get(cardpackId);
+		Cardpack cardpack = cardpackDao.get(cardpackId);
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("cardpackName", card.getCardpackName());
+		map.put("cardpackName", cardpack.getCardpackName());
 		map.put("ownerUserName", user.getUserName());
-		map.put("ownerUserId", card.getOwnerUserId());
+		map.put("ownerUserId", cardpack.getOwnerUserId());
 		map.put("ownerUserPicture", user.getProfilePictureUrl());
-		map.put("cardCnt", card.getCardCnt());
+		map.put("cardCnt", cardpack.getCardCnt());
 		map.put("inStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.IN_STUDY));
 		map.put("completeStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.COMPLETE));
-		map.put("accessCd", card.getAccessCd());
+		map.put("cardpackAccessCd", cardpack.getCardpackAccessCd());
+
+		// 갱신
+		cardpack.setLastAccessDate(new Date());
+		cardpackDao.saveOrUpdateWithoutEvict(cardpack);
 
 		return map;
 	}
@@ -299,12 +303,17 @@ public class CardpacksController {
 		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
 		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
 
-		Cardpack card = cardpackDao.get(cardpackId);
-		String signedUrl = s3SendService.getSignedUrl(card.getS3Key());
+		Cardpack cardpack = cardpackDao.get(cardpackId);
+		String signedUrl = s3SendService.getSignedUrl(cardpack.getS3Key());
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("docVer", card.getDocVer());
+		map.put("docVer", cardpack.getDocVer());
 		map.put("s3Url", signedUrl);
+
+		// 갱신
+		cardpack.setLastAccessDate(new Date());
+		cardpackDao.saveOrUpdateWithoutEvict(cardpack);
+
 		return map;
 	}
 }

@@ -15,6 +15,8 @@ import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.v1.cardpacks.dao.CardpackDao;
 import com.genius.flashcard.api.v1.cardpacks.dto.Cardpack;
 import com.genius.flashcard.api.v1.cardpacks.param.CardpackParam;
+import com.genius.flashcard.common.enums.CardpackAccessCdEnum;
+import com.genius.flashcard.common.enums.CardpackStatusCdEnum;
 
 
 @Service
@@ -79,12 +81,13 @@ public class CardpackService {
 	public String create(CardpackParam cardpackParam, String userId, User user) throws Exception {
 		Cardpack c = new Cardpack();
 		c.setCardpackName(cardpackParam.getCardpackName());
-//		c.setDocData(cardpackParam.getDocData());
 		c.setDocVer("1.0");
 		c.setCardCnt(getCardCnt(cardpackParam.getDocData()));
 		c.setOwnerUserId(user.getUserId());
 		c.setCreatedDate(new Date());
 		c.setS3Key(cardpackParam.getS3Key());
+		c.setCardpackAccessCd(CardpackAccessCdEnum.PUBLIC);
+		c.setCardpackStatusCd(CardpackStatusCdEnum.IN_PROGRESS);
 
 		return cardpackDao.create(c);
 	}

@@ -65,14 +65,14 @@ public class Cardpack {
 	 */
 	@Type(type = BASE_PATH + "CardpackStatusCdEnumType")
 	@Column(name = "CARDPACK_STATUS_CD", length = 20)
-	CardpackStatusCdEnum statusCd;
+	CardpackStatusCdEnum cardpackStatusCd;
 
 	/**
 	 * 접근권한코드
 	 */
 	@Column(name = "CARDPACK_ACCESS_CD", length = 20)
 	@Type(type = BASE_PATH + "CardpackAccessCdEnumType")
-	CardpackAccessCdEnum accessCd;
+	CardpackAccessCdEnum cardpackAccessCd;
 
 	/**
 	 * 카드팩 카테고리 ID
@@ -150,20 +150,20 @@ public class Cardpack {
 		this.downloadCnt = downloadCnt;
 	}
 
-	public CardpackStatusCdEnum getStatusCd() {
-		return statusCd;
+	public CardpackStatusCdEnum getCardpackStatusCd() {
+		return cardpackStatusCd;
 	}
 
-	public void setStatusCd(CardpackStatusCdEnum statusCd) {
-		this.statusCd = statusCd;
+	public void setCardpackStatusCd(CardpackStatusCdEnum cardpackStatusCd) {
+		this.cardpackStatusCd = cardpackStatusCd;
 	}
 
-	public CardpackAccessCdEnum getAccessCd() {
-		return accessCd;
+	public CardpackAccessCdEnum getCardpackAccessCd() {
+		return cardpackAccessCd;
 	}
 
-	public void setAccessCd(CardpackAccessCdEnum accessCd) {
-		this.accessCd = accessCd;
+	public void setCardpackAccessCd(CardpackAccessCdEnum cardpackAccessCd) {
+		this.cardpackAccessCd = cardpackAccessCd;
 	}
 
 	public String getCardpackCategoryId() {

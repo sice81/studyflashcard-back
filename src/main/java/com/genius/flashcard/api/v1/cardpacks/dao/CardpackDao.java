@@ -28,6 +28,10 @@ public class CardpackDao {
 
 	@CacheEvict(value=CACHE, key="#cardpack.cardpackId")
 	public void saveOrUpdate(Cardpack cardpack) {
+		saveOrUpdateWithoutEvict(cardpack);
+	}
+
+	public void saveOrUpdateWithoutEvict(Cardpack cardpack) {
 		hibernateTemplate.saveOrUpdate(cardpack);
 	}
 
