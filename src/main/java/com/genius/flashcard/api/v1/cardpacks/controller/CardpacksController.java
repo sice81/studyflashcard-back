@@ -268,7 +268,7 @@ public class CardpacksController {
 			studyActLog.setBackViewCnt(act.getCardViewCnt());
 
 			if (act.getRightCnt() > 0 || act.getWrongCnt() > 0 || act.getCardViewCnt() > 0) {
-				studyActLogDao.save(studyActLog);
+				studyActLogDao.insert(studyActLog);
 			}
 		}
 	}
@@ -292,7 +292,7 @@ public class CardpacksController {
 
 		// 갱신
 		cardpack.setLastAccessDate(new Date());
-		cardpackDao.saveOrUpdateWithoutEvict(cardpack);
+		cardpackDao.updateWithoutEvict(cardpack);
 
 		return map;
 	}
@@ -312,7 +312,7 @@ public class CardpacksController {
 
 		// 갱신
 		cardpack.setLastAccessDate(new Date());
-		cardpackDao.saveOrUpdateWithoutEvict(cardpack);
+		cardpackDao.updateWithoutEvict(cardpack);
 
 		return map;
 	}

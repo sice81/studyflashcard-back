@@ -21,18 +21,18 @@ public class CardpackDao {
 	@Autowired
 	HibernateTemplate hibernateTemplate;
 
-	public String create(Cardpack cardpack) {
+	public String insert(Cardpack cardpack) {
 		Serializable s = hibernateTemplate.save(cardpack);
 		return s.toString();
 	}
 
 	@CacheEvict(value=CACHE, key="#cardpack.cardpackId")
-	public void saveOrUpdate(Cardpack cardpack) {
-		saveOrUpdateWithoutEvict(cardpack);
+	public void update(Cardpack cardpack) {
+		updateWithoutEvict(cardpack);
 	}
 
-	public void saveOrUpdateWithoutEvict(Cardpack cardpack) {
-		hibernateTemplate.saveOrUpdate(cardpack);
+	public void updateWithoutEvict(Cardpack cardpack) {
+		hibernateTemplate.update(cardpack);
 	}
 
 	@Cacheable(value=CACHE, key="#cardpackId")

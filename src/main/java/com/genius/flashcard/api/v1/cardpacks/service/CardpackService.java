@@ -89,7 +89,7 @@ public class CardpackService {
 		c.setCardpackAccessCd(CardpackAccessCdEnum.PUBLIC);
 		c.setCardpackStatusCd(CardpackStatusCdEnum.IN_PROGRESS);
 
-		return cardpackDao.create(c);
+		return cardpackDao.insert(c);
 	}
 
 	public void save(CardpackParam cardpackParam, String cardpackId, String userId, User user) throws Exception {
@@ -104,7 +104,7 @@ public class CardpackService {
 		c.setCreatedDate(new Date());
 		c.setS3Key(cardpackParam.getS3Key());
 
-		cardpackDao.saveOrUpdate(c);
+		cardpackDao.update(c);
 	}
 
 	public List<Cardpack> findByUserId(String userId) {

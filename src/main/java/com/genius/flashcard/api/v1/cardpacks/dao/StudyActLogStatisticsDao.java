@@ -27,7 +27,7 @@ public class StudyActLogStatisticsDao {
 	HibernateTemplate hibernateTemplate;
 
 	@Cacheable(value=CACHE, key="'days_' + #userId + '_' + #startDate.getTime() + '-' + #endDate.getTime()")
-	public List<StudyActLogStatistics> findDays(String userId, Date startDate, Date endDate) {
+	public List<StudyActLogStatistics> findDaysStatistics(String userId, Date startDate, Date endDate) {
 		List<StudyActLogStatistics> days = new ArrayList<StudyActLogStatistics>();
 
 		StringBuffer sb = new StringBuffer();

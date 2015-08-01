@@ -23,13 +23,13 @@ public class StudyStatusDao {
 	@Autowired
 	HibernateTemplate hibernateTemplate;
 
-	public String create(StudyStatus studyStatus) {
+	public String insert(StudyStatus studyStatus) {
 		Serializable s = hibernateTemplate.save(studyStatus);
 		return s.toString();
 	}
 
 	@CacheEvict(value=CACHE, key="#studyStatus.userId + '_' + #studyStatus.cardpackId")
-	public void saveOrUpdate(StudyStatus studyStatus) {
+	public void save(StudyStatus studyStatus) {
 		studyStatus.setModifiedDate(new Date());
 		hibernateTemplate.saveOrUpdate(studyStatus);
 	}

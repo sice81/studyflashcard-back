@@ -23,6 +23,6 @@ public class StudyStatusService {
 		studyStatus.setRightCnt(studyStatusParam.getRights().length);
 		studyStatus.setCardpackId(cardpackId);
 		studyStatus.setS3Key(s3Key);
-		studyStatusDao.saveOrUpdate(studyStatus);
+		studyStatusDao.save(studyStatus);
 	}
 }

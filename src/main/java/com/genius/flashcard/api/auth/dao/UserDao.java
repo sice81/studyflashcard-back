@@ -15,16 +15,20 @@ import com.genius.flashcard.api.auth.dto.User;
 public class UserDao {
 	@Autowired
 	HibernateTemplate hibernateTemplate;
-	
-	public void saveUser(User user) {
+
+	public void insert(User user) {
 		hibernateTemplate.save(user);
 	}
-	
-	public User getUser(String userId) {
+
+	public void update(User user) {
+		hibernateTemplate.update(user);
+	}
+
+	public User get(String userId) {
 		return hibernateTemplate.get(User.class, userId);
 	}
-	
-	public List<User> findAll() {
-		return hibernateTemplate.loadAll(User.class);
-	}
+
+//	public List<User> findAll() {
+//		return hibernateTemplate.loadAll(User.class);
+//	}
 }

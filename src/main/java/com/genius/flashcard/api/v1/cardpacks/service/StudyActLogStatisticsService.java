@@ -21,7 +21,7 @@ public class StudyActLogStatisticsService {
 
 	public List<StudyActLogStatistics> findDays(String userId, Date startDate, Date endDate) {
 		List<StudyActLogStatistics> result = new ArrayList<StudyActLogStatistics>();
-		List<StudyActLogStatistics> list = studyActLogStatisticsDao.findDays(userId, startDate, endDate);
+		List<StudyActLogStatistics> list = studyActLogStatisticsDao.findDaysStatistics(userId, startDate, endDate);
 
 		DateHelper index = new DateHelper(startDate);
 		DateHelper end = new DateHelper(endDate);

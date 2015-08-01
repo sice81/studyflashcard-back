@@ -18,7 +18,7 @@ public class StudyActLogDao {
 	@Autowired
 	HibernateTemplate hibernateTemplate;
 
-	public String save(StudyActLog studyActLog) {
+	public String insert(StudyActLog studyActLog) {
 		Serializable s = hibernateTemplate.save(studyActLog);
 		return s.toString();
 	}

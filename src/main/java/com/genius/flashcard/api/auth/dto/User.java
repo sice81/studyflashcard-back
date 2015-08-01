@@ -45,6 +45,9 @@ public class User {
 	@Column(name = "EXTERN_USER_ID", length = 500)
 	String externUserId;
 
+	@Column(name = "LAST_CONNECTED_DATE")
+	Date lastConnectedDate;
+
 	@Column(name = "CREATED_DATE")
 	Date createdDate;
 
@@ -118,5 +121,13 @@ public class User {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public Date getLastConnectedDate() {
+		return lastConnectedDate;
+	}
+
+	public void setLastConnectedDate(Date lastConnectedDate) {
+		this.lastConnectedDate = lastConnectedDate;
 	}
 }
