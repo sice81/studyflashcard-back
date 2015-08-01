@@ -30,6 +30,17 @@ import com.genius.flashcard.interceptor.AuthInterceptor;
 
 @Configuration
 public class AppConfig extends WebMvcConfigurerAdapter {
+	@Value("${app.db.driver}")
+	String dbDriver;
+
+	@Value("${app.db.url}")
+	String dbUrl;
+
+	@Value("${app.db.username}")
+	String dbUsername;
+
+	@Value("${app.db.password}")
+	String dbPassword;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -65,18 +76,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		cmfb.setShared(true);
 		return cmfb;
 	}
-
-	@Value("${app.db.driver}")
-	String dbDriver;
-
-	@Value("${app.db.url}")
-	String dbUrl;
-
-	@Value("${app.db.username}")
-	String dbUsername;
-
-	@Value("${app.db.password}")
-	String dbPassword;
 
 	@Bean
 	public DataSource dataSource() {

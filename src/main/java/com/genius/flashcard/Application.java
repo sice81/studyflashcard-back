@@ -4,8 +4,8 @@ import java.sql.SQLException;
 
 import javax.annotation.PostConstruct;
 
-import org.h2.tools.Console;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
@@ -24,19 +24,15 @@ public class Application {
 	@Autowired
 	UserDao userDao;
 
+	@Value("${app.step}")
+	String APP_STEP;
+
     public static void main(String[] args) throws SQLException {
-//    	Console.main();
         SpringApplication.run(Application.class, args);
     }
 
     @PostConstruct
     public void addData() {
-//    	System.out.println("addData");
-//    	User user = new User();
-//    	user.setUserId("sice81");
-//    	user.setPassword("1234");
-//    	user.setUserAccountType(UserAccountTypeEnum.FACEBOOK);
-//    	user.setUserStatus(UserStatusEnum.JUST);
-//    	userDao.saveUser(user);
+    	System.out.println("app.step = " + APP_STEP);
     }
 }
