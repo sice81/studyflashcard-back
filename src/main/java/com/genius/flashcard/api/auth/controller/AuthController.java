@@ -62,7 +62,7 @@ public class AuthController {
 		if (result != null) {
 			User user;
 
-			user = userDao.getUser(MessageDigestUtil.getMD5(result.getEmail()));
+			user = userDao.getUser(MessageDigestUtil.getMD58(result.getEmail()));
 
 			if (user == null) {
 				Assert.isTrue(result.getId() != null, "Id is null!");
@@ -72,7 +72,7 @@ public class AuthController {
 				user = new User();
 				user.setUserName(result.getName());
 				//user.setUserId(String.format("%s-%s", UserAccountTypeEnum.FACEBOOK.getValue(), userId));
-				user.setUserId(MessageDigestUtil.getMD5(result.getEmail()));
+				user.setUserId(MessageDigestUtil.getMD58(result.getEmail()));
 				user.setUserEmail(result.getEmail());
 				user.setProfilePictureUrl(String.format("https://graph.facebook.com/%s/picture", result.getId()));
 				user.setUserAccountType(UserAccountTypeEnum.FACEBOOK);
