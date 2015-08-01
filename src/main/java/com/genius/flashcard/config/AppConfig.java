@@ -31,16 +31,16 @@ import com.genius.flashcard.interceptor.AuthInterceptor;
 @Configuration
 public class AppConfig extends WebMvcConfigurerAdapter {
 	@Value("${app.db.driver}")
-	String dbDriver;
+	String DB_DRIVER;
 
 	@Value("${app.db.url}")
-	String dbUrl;
+	String DB_URL;
 
 	@Value("${app.db.username}")
-	String dbUsername;
+	String DB_USERNAME;
 
 	@Value("${app.db.password}")
-	String dbPassword;
+	String DB_PASSWORD;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -81,10 +81,10 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	public DataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
 
-		dataSource.setDriverClassName(dbDriver);
-		dataSource.setUrl(dbUrl);
-		dataSource.setUsername(dbUsername);
-		dataSource.setPassword(dbPassword);
+		dataSource.setDriverClassName(DB_DRIVER);
+		dataSource.setUrl(DB_URL);
+		dataSource.setUsername(DB_USERNAME);
+		dataSource.setPassword(DB_PASSWORD);
 
 		return dataSource;
 	}
