@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ import com.genius.flashcard.api.v1.cardpacks.service.S3Service;
 import com.genius.flashcard.auth.TokenService;
 import com.genius.flashcard.common.enums.UserAccountTypeEnum;
 import com.genius.flashcard.common.enums.UserStatusEnum;
+import com.genius.flashcard.utils.MessageDigestUtil;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -63,9 +65,15 @@ public class AuthController {
 			user = userDao.getUser(String.format("%s-%s", UserAccountTypeEnum.FACEBOOK.getValue(), userId));
 
 			if (user == null) {
+				Assert.isTrue(result.getId() != null, "Id is null!");
+				Assert.isTrue(result.getName() != null, "Name is null!");
+				Assert.isTrue(result.getEmail() != null, "Email is null!");
+
 				user = new User();
 				user.setUserName(result.getName());
-				user.setUserId(String.format("%s-%s", UserAccountTypeEnum.FACEBOOK.getValue(), userId));
+				//user.setUserId(String.format("%s-%s", UserAccountTypeEnum.FACEBOOK.getValue(), userId));
+				user.setUserId(MessageDigestUtil.getMD5(result.getEmail()));
+				user.setUserEmail(result.getEmail());
 				user.setUserAccountType(UserAccountTypeEnum.FACEBOOK);
 				user.setUserStatus(UserStatusEnum.ACTIVE);
 				user.setExternUserId(userId);

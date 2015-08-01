@@ -11,41 +11,44 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class FacebookValidateService {
 	Logger logger = Logger.getLogger(this.getClass().getName());
-	
+
 	RestTemplate restTemplate = new RestTemplate();
 	String URL = "https://graph.facebook.com/me";
-	
+
 	public FacebookUserResDto getUser(String accessToken, String userId) throws Exception {
 		FacebookUserResDto result = null;
-		
+
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("access_token", accessToken);
-		
-		String url = String.format("%s?access_token=%s", URL, accessToken);
-		
+
+		String url = String.format("%s?fields=id,name,email&access_token=%s", URL, accessToken);
+
 		try {
 			ResponseEntity<FacebookUserResDto> res = restTemplate.getForEntity(url, FacebookUserResDto.class, map);
-			
+
+			FacebookUserResDto resDto = res.getBody();
+
 			// 성공적인 경우
-			if (res.getBody().error == null) {
+			if (resDto.error == null) {
 				if (userId.equals(res.getBody().getId())) {
-//					result = true;
 					result = res.getBody();
 				}
+			} else {
+				logger.info(String.format("[%s] %s", resDto.error.getCode(), resDto.error.getMessage()));
 			}
 		} catch (Exception e) {
 			logger.log(java.util.logging.Level.WARNING, e.getMessage(), e.getCause());
 		}
-		
+
 		return result;
 	}
-	
+
 	public static class FacebookUserResDto {
 		class Error {
 			String message;
 			String type;
 			String code;
-			
+
 			public String getMessage() {
 				return message;
 			}
@@ -65,9 +68,10 @@ public class FacebookValidateService {
 				this.code = code;
 			}
 		}
-		
+
 		String name;
 		String id;
+		String email;
 		Error error;
 		public String getName() {
 			return name;
@@ -80,6 +84,12 @@ public class FacebookValidateService {
 		}
 		public void setId(String id) {
 			this.id = id;
+		}
+		public String getEmail() {
+			return email;
+		}
+		public void setEmail(String email) {
+			this.email = email;
 		}
 		public Error getError() {
 			return error;
