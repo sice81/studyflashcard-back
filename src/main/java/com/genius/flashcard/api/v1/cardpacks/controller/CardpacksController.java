@@ -282,7 +282,9 @@ public class CardpacksController {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("cardpackName", card.getCardpackName());
+		map.put("ownerUserName", user.getUserName());
 		map.put("ownerUserId", card.getOwnerUserId());
+		map.put("ownerUserPicture", user.getProfilePictureUrl());
 		map.put("cardCnt", card.getCardCnt());
 		map.put("inStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.IN_STUDY));
 		map.put("completeStudyUserCnt", studyStatusDao.getCountInStudyUserCnt(cardpackId, StudyStatusCdEnum.COMPLETE));
