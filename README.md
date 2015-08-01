@@ -81,7 +81,7 @@ case $1 in
         echo "Starting genius-api ..."
         if [ ! -f ${HOME}/pid ]; then
                 cd ${HOME}
-                ${HOME}/bin/studyflashcard-back &> app.log &
+                ${HOME}/bin/studyflashcard-back $(cat /home/ec2-user/argument.txt) &> app.log &
             echo $! > ${HOME}/pid
             echo "genius-api started ..."
         else
