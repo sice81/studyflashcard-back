@@ -130,5 +130,23 @@ chkconfig --add genius-api
 service genius-api start; tail -f studyflashcard-back/app.log
 ```
 
+## S3 CORS
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <CORSRule>
+    <AllowedOrigin>*</AllowedOrigin>
+    <AllowedMethod>GET</AllowedMethod>
+	<AllowedMethod>OPTIONS</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+  </CORSRule>
+</CORSConfiguration>
+```
 
+## 헬스체크 '/nop' 추가, request 인터셉터 예외처리/허용
 
+## 로드밸런스 OUTBOUND 80 풀어주기
+
+## 클라우드프론트
+Access-Control-Request-Headers
+Access-Control-Request-Method
