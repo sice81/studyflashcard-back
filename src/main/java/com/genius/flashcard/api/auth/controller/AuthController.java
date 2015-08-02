@@ -21,7 +21,7 @@ import com.genius.flashcard.api.auth.dto.User;
 import com.genius.flashcard.api.auth.service.FacebookValidateService;
 import com.genius.flashcard.api.auth.service.FacebookValidateService.FacebookUserResDto;
 import com.genius.flashcard.auth.TokenService;
-import com.genius.flashcard.common.enums.UserAccountTypeEnum;
+import com.genius.flashcard.common.enums.UserAccountTypeCdEnum;
 import com.genius.flashcard.common.enums.UserStatusEnum;
 import com.genius.flashcard.utils.MessageDigestUtil;
 
@@ -76,7 +76,7 @@ public class AuthController {
 				user.setUserId(MessageDigestUtil.getMD58(result.getEmail()));
 				user.setUserEmail(result.getEmail());
 				user.setProfilePictureUrl(String.format("https://graph.facebook.com/%s/picture", result.getId()));
-				user.setUserAccountType(UserAccountTypeEnum.FACEBOOK);
+				user.setUserAccountTypeCd(UserAccountTypeCdEnum.FACEBOOK);
 				user.setUserStatus(UserStatusEnum.ACTIVE);
 				user.setExternUserId(userId);
 				user.setCreatedDate(new Date());
@@ -87,9 +87,14 @@ public class AuthController {
 				userDao.update(user);
 			}
 
-			map.put("result", true);
-			map.put("userId", user.getUserId());
-			map.put("accessToken", tokenService.allocate(user).getToken().getKey());
+			if (user.getUserStatus() == UserStatusEnum.ACTIVE) {
+				map.put("result", true);
+				map.put("userId", user.getUserId());
+				map.put("accessToken", tokenService.allocate(user).getToken().getKey());
+			} else {
+				map.put("result", false);
+			}
+
 		} else {
 			map.put("result", false);
 		}
