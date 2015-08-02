@@ -26,6 +26,7 @@ import com.genius.flashcard.api.v1.cardpacks.dto.Cardpack;
 import com.genius.flashcard.api.v1.cardpacks.dto.StudyActLog;
 import com.genius.flashcard.api.v1.cardpacks.dto.StudyStatus;
 import com.genius.flashcard.interceptor.AuthInterceptor;
+import com.genius.flashcard.interceptor.RequestInfoInterceptor;
 
 
 @Configuration
@@ -45,6 +46,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		super.addInterceptors(registry);
+		registry.addInterceptor(requestInfoInterceptor());
 		registry.addInterceptor(authInterceptor());
 	}
 
@@ -62,6 +64,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public AuthInterceptor authInterceptor() {
 		return new AuthInterceptor();
+	}
+
+	@Bean
+	public RequestInfoInterceptor requestInfoInterceptor() {
+		return new RequestInfoInterceptor();
 	}
 
 	@Bean

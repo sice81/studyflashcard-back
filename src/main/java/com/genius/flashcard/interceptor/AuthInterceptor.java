@@ -19,7 +19,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 	@Autowired
 	TokenService tokenService;
 
-	String[] allows = new String[] { "/api/auth/facebook", "/api/auth/test" };
+	String[] allows = new String[] { "/nop", "/api/auth/facebook", "/api/auth/test" };
 
 	String[] allowsRegExp = new String[] { "/api/app/v1/cardpacks/[0-9]+", "/api/app/v1/cardpacks/[0-9]+/doc" };
 
