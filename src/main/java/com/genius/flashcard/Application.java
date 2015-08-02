@@ -27,6 +27,9 @@ public class Application {
 	@Value("${app.step}")
 	String APP_STEP;
 
+	@Value("${app.db.driver}")
+	String APP_DB_DRIVER;
+
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Application.class, args);
     }
@@ -34,5 +37,6 @@ public class Application {
     @PostConstruct
     public void addData() {
     	System.out.println("app.step = " + APP_STEP);
+    	System.out.println("app.db.driver = " + APP_DB_DRIVER);
     }
 }
