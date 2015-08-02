@@ -5,7 +5,7 @@ package com.genius.flashcard.common.enums;
  * @author Administrator
  *
  */
-public enum UserAccountTypeEnum implements Enumable {
+public enum UserAccountTypeCdEnum implements Enumable {
 	UNKNOWN(null),
 	
 	EMPTY(""),
@@ -19,7 +19,7 @@ public enum UserAccountTypeEnum implements Enumable {
 	
 	String value;
 	
-	UserAccountTypeEnum(String value) {
+	UserAccountTypeCdEnum(String value) {
 		this.value = value;
 	}
 	
@@ -27,14 +27,14 @@ public enum UserAccountTypeEnum implements Enumable {
 		return value;
 	}
 	
-	public static UserAccountTypeEnum parse(String value) {
-		UserAccountTypeEnum result = UserAccountTypeEnum.UNKNOWN;
+	public static UserAccountTypeCdEnum parse(String value) {
+		UserAccountTypeCdEnum result = UserAccountTypeCdEnum.UNKNOWN;
 		
 		if (value == null) {
 			return null;
 		}
 		
-		for (UserAccountTypeEnum e : UserAccountTypeEnum.values()) {
+		for (UserAccountTypeCdEnum e : UserAccountTypeCdEnum.values()) {
 			if (value.equals(e.value())) {
 				result = e;
 				break;
@@ -50,7 +50,7 @@ public enum UserAccountTypeEnum implements Enumable {
 	}
 
 	@Override
-	public UserAccountTypeEnum getEnum(String value) {
+	public UserAccountTypeCdEnum getEnum(String value) {
 		return parse(value);
 	}
 }

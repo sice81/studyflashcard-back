@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
-import com.genius.flashcard.common.enums.UserAccountTypeEnum;
+import com.genius.flashcard.common.enums.UserAccountTypeCdEnum;
 import com.genius.flashcard.common.enums.UserStatusEnum;
 
 @Entity
@@ -31,23 +31,47 @@ public class User {
 	@Column(name = "USER_EMAIL", length = 500)
 	String userEmail;
 
+	/**
+	 * 프로필 사진 URL
+	 */
 	@Column(name = "PROFILE_PIC_URL", length = 4000)
 	String profilePictureUrl;
 
-	@Type(type = BASE_PATH + "UserAccountTypeEnumType")
+	/**
+	 * 유저 계정 구분코드
+	 */
+	@Type(type = BASE_PATH + "UserAccountTypeCdEnumType")
 	@Column(name = "USER_ACCOUNT_TYPE_CD", length = 20)
-	UserAccountTypeEnum userAccountType;
+	UserAccountTypeCdEnum userAccountTypeCd;
 
+	/**
+	 * 유저 상태코드
+	 */
 	@Type(type = BASE_PATH + "UserStatusEnumType")
 	@Column(name = "USER_STATUS_CD", length = 20)
 	UserStatusEnum userStatus;
 
+	/**
+	 * 외부유저ID
+	 */
 	@Column(name = "EXTERN_USER_ID", length = 500)
 	String externUserId;
 
+	/**
+	 * 최근 접속일시
+	 */
 	@Column(name = "LAST_CONNECTED_DATE")
 	Date lastConnectedDate;
 
+	/**
+	 * 수정일시
+	 */
+	@Column(name = "MODIFIED_DATE")
+	Date modifiedDate;
+
+	/**
+	 * 생성일시
+	 */
 	@Column(name = "CREATED_DATE")
 	Date createdDate;
 
@@ -91,12 +115,20 @@ public class User {
 		this.profilePictureUrl = profilePictureUrl;
 	}
 
-	public UserAccountTypeEnum getUserAccountType() {
-		return userAccountType;
+	public UserAccountTypeCdEnum getUserAccountTypeCd() {
+		return userAccountTypeCd;
 	}
 
-	public void setUserAccountType(UserAccountTypeEnum userAccountType) {
-		this.userAccountType = userAccountType;
+	public void setUserAccountTypeCd(UserAccountTypeCdEnum userAccountTypeCd) {
+		this.userAccountTypeCd = userAccountTypeCd;
+	}
+
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
 	}
 
 	public UserStatusEnum getUserStatus() {

@@ -68,6 +68,12 @@ public class StudyStatus implements Serializable {
 	@Column(name = "MODIFIED_DATE")
 	Date modifiedDate;
 
+	/**
+	 * 생성일시
+	 */
+	@Column(name = "CREATED_DATE")
+	Date createdDate;
+
 	public String getUserId() {
 		return userId;
 	}
@@ -94,6 +100,15 @@ public class StudyStatus implements Serializable {
 
 	public int getRightCnt() {
 		return rightCnt;
+	}
+
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	public void setRightCnt(int rightCnt) {

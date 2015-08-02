@@ -24,6 +24,14 @@ public class StudyStatusDao {
 	HibernateTemplate hibernateTemplate;
 
 	public String insert(StudyStatus studyStatus) {
+		if (studyStatus.getModifiedDate() == null) {
+			studyStatus.setModifiedDate(new Date());
+		}
+
+		if (studyStatus.getCreatedDate() == null) {
+			studyStatus.setCreatedDate(new Date());
+		}
+
 		Serializable s = hibernateTemplate.save(studyStatus);
 		return s.toString();
 	}

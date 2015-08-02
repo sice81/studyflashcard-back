@@ -1,5 +1,7 @@
 package com.genius.flashcard.api.auth.dao;
 
+import java.util.Date;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,20 @@ public class UserDao {
 	HibernateTemplate hibernateTemplate;
 
 	public void insert(User user) {
+		if (user.getCreatedDate() == null) {
+			user.setCreatedDate(new Date());
+		}
+
+		if (user.getModifiedDate() == null) {
+			user.setModifiedDate(new Date());
+		}
+
 		hibernateTemplate.save(user);
 	}
 
 	@CacheEvict(value=CACHE, key="#user.userId")
 	public void update(User user) {
+		user.setModifiedDate(new Date());
 		hibernateTemplate.update(user);
 	}
 
