@@ -285,8 +285,12 @@ public class CardpacksController {
 
 		Cardpack cardpack = cardpackDao.get(cardpackId);
 
-		boolean isOwner = cardpack.getOwnerUserId().equals(user.getUserId());
+		boolean isOwner = false;
 		boolean isCanShow = false;
+
+		if (user != null) {
+			isOwner = cardpack.getOwnerUserId().equals(user.getUserId());
+		}
 
 		if (isOwner) {
 			isCanShow = true;
@@ -329,8 +333,12 @@ public class CardpacksController {
 //		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
 
 		Cardpack cardpack = cardpackDao.get(cardpackId);
-		boolean isOwner = cardpack.getOwnerUserId().equals(user.getUserId());
+		boolean isOwner = false;
 		boolean isCanShow = false;
+
+		if (user != null) {
+			isOwner = cardpack.getOwnerUserId().equals(user.getUserId());
+		}
 
 		if (isOwner) {
 			isCanShow = true;
@@ -343,13 +351,16 @@ public class CardpacksController {
 		Assert.isTrue(isCanShow, "You can't see this doc.");
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		String signedUrl = s3SendService.getSignedUrl(cardpack.getS3Key());
-		map.put("docVer", cardpack.getDocVer());
-		map.put("s3Url", signedUrl);
 
-		// 갱신
-		cardpack.setLastAccessDate(new Date());
-		cardpackDao.updateWithoutEvict(cardpack);
+		if (isCanShow) {
+			String signedUrl = s3SendService.getSignedUrl(cardpack.getS3Key());
+			map.put("docVer", cardpack.getDocVer());
+			map.put("s3Url", signedUrl);
+
+			// 갱신
+			cardpack.setLastAccessDate(new Date());
+			cardpackDao.updateWithoutEvict(cardpack);
+		}
 
 		return map;
 	}

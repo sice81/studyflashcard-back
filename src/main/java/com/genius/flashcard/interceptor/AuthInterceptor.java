@@ -1,6 +1,7 @@
 package com.genius.flashcard.interceptor;
 
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,16 +19,24 @@ public class AuthInterceptor implements HandlerInterceptor {
 	@Autowired
 	TokenService tokenService;
 
-	String[] allows = new String[]{"/api/auth/facebook", "/api/auth/test"};
+	String[] allows = new String[] { "/api/auth/facebook", "/api/auth/test" };
+
+	String[] allowsRegExp = new String[] { "/api/app/v1/cardpacks/[0-9]+", "/api/app/v1/cardpacks/[0-9]+/doc" };
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		String url = request.getRequestURI();
+		String uri = request.getRequestURI();
 
 		// 인증 패스 목록 검사
 		for (String i : allows) {
-			if (i.equals(url)) {
+			if (i.equals(uri)) {
+				return true;
+			}
+		}
+
+		for (String regex : allowsRegExp) {
+			if (Pattern.matches(regex, uri)) {
 				return true;
 			}
 		}
