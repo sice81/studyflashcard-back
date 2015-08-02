@@ -98,12 +98,6 @@ public class Cardpack {
 	Date lastAccessDate;
 
 	/**
-	 * 생성일시
-	 */
-	@Column(name = "CREATED_DATE", nullable = false)
-	Date createdDate;
-
-	/**
 	 * S3 키
 	 */
 	@Column(name = "S3_KEY", length = 500)
@@ -120,6 +114,40 @@ public class Cardpack {
 	 */
 	@Column(name = "IS_DELETE")
 	boolean isDelete;
+
+	/**
+	 * 수정 유저ID
+	 */
+	@Column(name = "MODIFIER_USER_ID", length = 50)
+	String modifierUserId;
+
+	/**
+	 * 수정일시
+	 */
+	@Column(name = "MODIFIED_DATE")
+	Date modifiedDate;
+
+	/**
+	 * 생성일시
+	 */
+	@Column(name = "CREATED_DATE", nullable = false)
+	Date createdDate;
+
+	public String getModifierUserId() {
+		return modifierUserId;
+	}
+
+	public void setModifierUserId(String modifierUserId) {
+		this.modifierUserId = modifierUserId;
+	}
+
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
 
 	public String getCardpackId() {
 		return cardpackId;

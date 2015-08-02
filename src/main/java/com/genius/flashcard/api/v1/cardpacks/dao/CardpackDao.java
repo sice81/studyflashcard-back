@@ -1,6 +1,7 @@
 package com.genius.flashcard.api.v1.cardpacks.dao;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -22,20 +23,29 @@ public class CardpackDao {
 	HibernateTemplate hibernateTemplate;
 
 	public String insert(Cardpack cardpack) {
+		if (cardpack.getCreatedDate() == null) {
+			cardpack.setCreatedDate(new Date());
+		}
+
+		if (cardpack.getModifiedDate() == null) {
+			cardpack.setModifiedDate(new Date());
+		}
+
 		Serializable s = hibernateTemplate.save(cardpack);
 		return s.toString();
 	}
 
-	@CacheEvict(value=CACHE, key="#cardpack.cardpackId")
+	@CacheEvict(value = CACHE, key = "#cardpack.cardpackId")
 	public void update(Cardpack cardpack) {
 		updateWithoutEvict(cardpack);
 	}
 
 	public void updateWithoutEvict(Cardpack cardpack) {
+		cardpack.setModifiedDate(new Date());
 		hibernateTemplate.update(cardpack);
 	}
 
-	@Cacheable(value=CACHE, key="#cardpackId")
+	@Cacheable(value = CACHE, key = "#cardpackId")
 	public Cardpack get(String cardpackId) {
 		return hibernateTemplate.get(Cardpack.class, cardpackId);
 	}
