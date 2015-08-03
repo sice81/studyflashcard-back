@@ -13,30 +13,31 @@
 
 # 개발환경 설정 - 아마존 EC2
 
-1. java -version > 버전 확인 8 필요
-
-2. yum install java-1.8.0-openjdk-devel
-
-3. sudo alternatives --config java > 2번 선택
-
 ## 타임존 변경
-
 ```
-1. 원래 파일 백업
-mv /etc/localtime /etc/localtime_org
-
-2. 지역을 서울로 변경
-ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
-
-3. 변경후 확인 : KST로 보이는지 확인
-date
-2014. 07. 18. (11:36:35 KST
+sudo mv /etc/localtime /etc/localtime_org
+sudo ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 ```
 
+## 자바 1.8 설치
+```
+sudo yum install java-1.8.0-openjdk-devel
+```
 
-## 배포
+## 자바 1.8로 설정
+```
+sudo alternatives --config java
+```
 
-1. deploy.sh - tar 전체 배포
+## 각종 스크립트 생성
+argument.txt, deploy.sh, sdeploy.sh, genius-api 생성
+
+### argument.txt
+```
+--app.db.driver=org.h2.Driver --app.db.url=jdbc:h2:~/h2db/test --app.db.username=sa
+```
+
+### deploy.sh - tar 전체 배포
 ```sh
 #!/bin/sh
 service genius-api stop
@@ -47,7 +48,7 @@ rm studyflashcard-back.tar
 service genius-api start
 ```
 
-2. sdeplay.sh - jar 간편 배포
+### sdeplay.sh - jar 간편 배포
 ```sh
 #!/bin/sh
 service genius-api stop
@@ -57,9 +58,7 @@ rm genius-study-0.1.1.jar.original
 service genius-api start
 ```
 
-1. 아래 /etc/init.d/genius-api 로 파일생성
-2. 서비스등록 - chkconfig --add genius-api
-3. service start genius-api
+### genius-api
 ```sh
 #!/bin/sh
 ### BEGIN INIT INFO
@@ -81,7 +80,7 @@ case $1 in
         echo "Starting genius-api ..."
         if [ ! -f ${HOME}/pid ]; then
                 cd ${HOME}
-                ${HOME}/bin/studyflashcard-back &> app.log &
+                ${HOME}/bin/studyflashcard-back $(cat /home/ec2-user/argument.txt) &> app.log &
             echo $! > ${HOME}/pid
             echo "genius-api started ..."
         else
@@ -117,3 +116,37 @@ case $1 in
     ;;
 esac
 ```
+
+## 서비스 등록
+```
+sudo su
+cp genius-api /etc/init.d/
+chmod 755 /etc/init.d/genius-api
+chkconfig --add genius-api
+```
+
+## 서비스 시작
+```
+service genius-api start; tail -f studyflashcard-back/app.log
+```
+
+## S3 CORS
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <CORSRule>
+    <AllowedOrigin>*</AllowedOrigin>
+    <AllowedMethod>GET</AllowedMethod>
+	<AllowedMethod>OPTIONS</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+  </CORSRule>
+</CORSConfiguration>
+```
+
+## 헬스체크 '/nop' 추가, request 인터셉터 예외처리/허용
+
+## 로드밸런스 OUTBOUND 80 풀어주기
+
+## 클라우드프론트
+Access-Control-Request-Headers
+Access-Control-Request-Method
