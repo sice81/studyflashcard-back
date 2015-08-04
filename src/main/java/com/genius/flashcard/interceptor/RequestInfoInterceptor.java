@@ -1,5 +1,7 @@
 package com.genius.flashcard.interceptor;
 
+import java.util.Date;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,14 +10,22 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.genius.flashcard.Context;
+import java.util.Map.Entry;
+
 public class RequestInfoInterceptor implements HandlerInterceptor {
+
 	Logger logger = Logger.getLogger(this.getClass().getName());
+
+	public static final String LINE = "####################################################### \n";
+
+	public static final String LINE2 = "------------------------------------------------------- \n";
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		String uri = request.getRequestURI();
-		logger.info(String.format("URI = %s", uri));
+		Context.requestId.set(new Date().getTime());
+		print(request, response);
 		return true;
 	}
 
@@ -27,5 +37,32 @@ public class RequestInfoInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
+	}
+
+	private void print(HttpServletRequest request, HttpServletResponse response) {
+		StringBuffer sb = new StringBuffer();
+		String uri = request.getRequestURI();
+
+		sb.append("\n");
+		sb.append(LINE);
+		sb.append(String.format("# Request id = %d \n", Context.requestId.get()));
+		sb.append(String.format("# URI = %s \n", uri));
+
+
+		if (request.getParameterMap().size() > 0) {
+			sb.append(LINE2);
+			sb.append("# Params \n");
+			sb.append(LINE2);
+
+			for (Entry<String, String[]> e : request.getParameterMap().entrySet()) {
+				for (String v : e.getValue()) {
+					sb.append(String.format("# %s = %s \n", e.getKey(), v));
+				}
+			}
+		}
+
+		sb.append(LINE);
+
+		logger.info(sb.toString());
 	}
 }

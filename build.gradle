@@ -41,10 +41,12 @@ dependencies {
     compile("org.hibernate:hibernate-core:4.3.10.Final")
     compile("commons-dbcp:commons-dbcp:1.4")
     compile("net.sf.ehcache:ehcache:2.9.0")
-    compile('com.amazonaws:aws-java-sdk:1.2.1')
 
-    compile("com.h2database:h2:1.4.187")
-    compile('mysql:mysql-connector-java:5.1.36')
+    compile 'com.amazonaws:aws-java-sdk-s3:1.10.8'
+    compile 'com.amazonaws:aws-java-sdk-dynamodb:1.10.8'
+
+    compile "com.h2database:h2:1.4.187"
+    compile 'mysql:mysql-connector-java:5.1.36'
     compile 'com.oracle:ojdbc6:11.1.0.7.0'
 
     compile 'p6spy:p6spy:1.3'
