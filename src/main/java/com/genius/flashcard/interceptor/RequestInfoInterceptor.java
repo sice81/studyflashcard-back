@@ -1,7 +1,8 @@
 package com.genius.flashcard.interceptor;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.Enumeration;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +12,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.genius.flashcard.Context;
-import java.util.Map.Entry;
 
 public class RequestInfoInterceptor implements HandlerInterceptor {
 
@@ -45,10 +45,23 @@ public class RequestInfoInterceptor implements HandlerInterceptor {
 
 		sb.append("\n");
 		sb.append(LINE);
-		sb.append(String.format("# Request id = %d \n", Context.requestId.get()));
+		sb.append(String.format("# Request id = %d [%s] \n", Context.requestId.get(), request.getMethod()));
 		sb.append(String.format("# URI = %s \n", uri));
 
+		// Header
+		Enumeration<String> headerNames = request.getHeaderNames();
+		sb.append(LINE2);
+		sb.append("# Headers \n");
+		sb.append(LINE2);
 
+		while (headerNames.hasMoreElements()) {
+			String key = (String) headerNames.nextElement();
+			String value = request.getHeader(key);
+
+			sb.append(String.format("# \t%s = %s \n", key, value));
+		}
+
+		// Param
 		if (request.getParameterMap().size() > 0) {
 			sb.append(LINE2);
 			sb.append("# Params \n");
@@ -56,7 +69,7 @@ public class RequestInfoInterceptor implements HandlerInterceptor {
 
 			for (Entry<String, String[]> e : request.getParameterMap().entrySet()) {
 				for (String v : e.getValue()) {
-					sb.append(String.format("# %s = %s \n", e.getKey(), v));
+					sb.append(String.format("# \t%s = %s \n", e.getKey(), v));
 				}
 			}
 		}
