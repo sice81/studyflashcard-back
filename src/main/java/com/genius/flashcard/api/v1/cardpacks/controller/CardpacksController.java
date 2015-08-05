@@ -243,7 +243,6 @@ public class CardpacksController {
 			@RequestBody StudyStatusParam studyStatusParam, @CurrentUser User user) throws Exception {
 		Assert.isTrue(userId.length() > 0, "UserId is empty!");
 		Assert.isTrue(cardpackId.length() > 0, "CardpackId is empty!");
-		Assert.isTrue(cardpackService.isCanGetCardpack(cardpackId, user), "You don't have permission!");
 
 		StudyStatus status = studyStatusDao.get(userId, cardpackId);
 		String json = converter.getObjectMapper().writeValueAsString(studyStatusParam);
@@ -258,21 +257,21 @@ public class CardpacksController {
 			}
 		}
 
-		s3SendService.sendDoc(json, keyName);
+		Assert.isTrue(s3SendService.sendDoc(json, keyName), "Upload failed!");
 
 		studyStatusService.save(studyStatusParam, cardpackId, keyName, userId, user);
 
 		StudyActLogParam act = studyStatusParam.getStudyActLog();
 		if (act != null) {
-			StudyActLog studyActLog = new StudyActLog();
-			studyActLog.setUserId(userId);
-			studyActLog.setCardpackId(cardpackId);
-			studyActLog.setCreatedDate(new Date());
-			studyActLog.setWrongCnt(act.getWrongCnt());
-			studyActLog.setRightCnt(act.getRightCnt());
-			studyActLog.setBackViewCnt(act.getCardViewCnt());
-
 			if (act.getRightCnt() > 0 || act.getWrongCnt() > 0 || act.getCardViewCnt() > 0) {
+				StudyActLog studyActLog = new StudyActLog();
+				studyActLog.setUserId(userId);
+				studyActLog.setCardpackId(cardpackId);
+				studyActLog.setCreatedDate(new Date());
+				studyActLog.setWrongCnt(act.getWrongCnt());
+				studyActLog.setRightCnt(act.getRightCnt());
+				studyActLog.setBackViewCnt(act.getCardViewCnt());
+
 				studyActLogDao.insert(studyActLog);
 			}
 		}
