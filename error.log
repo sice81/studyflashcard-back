@@ -1,6 +1,6 @@
-:compileJava
-:processResources
-:classes
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
 :jar
 :findMainClass
 :startScripts
@@ -17,4 +17,4 @@
 
 BUILD SUCCESSFUL
 
-Total time: 10.05 secs
+Total time: 9.545 secs
