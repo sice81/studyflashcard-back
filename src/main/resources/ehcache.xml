@@ -9,7 +9,7 @@
 	<cache name="TokenServiceCache"
 		maxEntriesLocalHeap="10000"
 		eternal="false"
-		timeToIdleSeconds="600"
+		timeToIdleSeconds="1800"
 		memoryStoreEvictionPolicy="LRU" >
 		<cacheEventListenerFactory class="com.genius.flashcard.ehcache.NotNullCacheEventListenerFactory" />
 	</cache>
