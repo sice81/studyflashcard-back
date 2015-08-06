@@ -28,10 +28,6 @@ public class CurrentUserHandlerMethodArgumentResolver implements HandlerMethodAr
 			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		String accessToken = webRequest.getHeader("x-session-token");
 
-		if (accessToken == null) {
-			return WebArgumentResolver.UNRESOLVED;
-		}
-
 		if (this.supportsParameter(parameter)) {
 			User user = tokenService.getUser(accessToken);
 			return user;

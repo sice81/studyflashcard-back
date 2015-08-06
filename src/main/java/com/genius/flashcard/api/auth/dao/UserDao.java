@@ -34,7 +34,9 @@ public class UserDao {
 
 	@CacheEvict(value=CACHE, key="#user.userId")
 	public void update(User user) {
-		user.setModifiedDate(new Date());
+		if (user.getModifiedDate() == null) {
+			user.setModifiedDate(new Date());
+		}
 		hibernateTemplate.update(user);
 	}
 
