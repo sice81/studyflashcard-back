@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class NopController {
 	@RequestMapping(value = "/nop", method = RequestMethod.GET)
 	public boolean nop() throws IOException {
-		return true;
+		return false;
 	}
 }
