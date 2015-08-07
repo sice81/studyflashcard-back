@@ -51,6 +51,12 @@ vi /etc/init.d/jenkins
 JENKINS_PORT=8081
 ```
 
+### jenkins 접속
+```
+http://[IP]:8081
+jenkins 관리 > 플러그인 관리 > 설치가능 > GIT plugin, GitHub plubin 설치
+```
+
 
 ## 각종 스크립트 생성
 argument.txt, deploy.sh, sdeploy.sh, genius-api 생성
