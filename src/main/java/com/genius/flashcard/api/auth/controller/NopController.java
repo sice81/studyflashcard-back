@@ -12,4 +12,9 @@ public class NopController {
 	public boolean nop() throws IOException {
 		return false;
 	}
+
+	@RequestMapping(value = "/nop2", method = RequestMethod.GET)
+	public boolean nop2() throws IOException {
+		return true;
+	}
 }
