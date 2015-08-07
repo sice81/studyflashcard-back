@@ -2,7 +2,7 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 JAVA=/usr/bin/java
 HOME=./
-PID_FILE=/tmp/genius-api-pid
+PID_FILE=./genius-api-pid
 
 if [ -f ${PID_FILE} ]; then
         echo "shutting down previous..."

@@ -1,6 +1,7 @@
 package com.genius.flashcard;
 
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 
@@ -21,6 +22,8 @@ import com.genius.flashcard.api.auth.dao.UserDao;
 @EnableCaching
 //@SpringBootApplication
 public class Application {
+	Logger logger = Logger.getLogger(this.getClass().getName());
+
 	@Autowired
 	UserDao userDao;
 
@@ -36,7 +39,7 @@ public class Application {
 
     @PostConstruct
     public void addData() {
-    	System.out.println("### app.step = " + APP_STEP);
-    	System.out.println("### app.db.driver = " + APP_DB_DRIVER);
+    	logger.info("### app.step = " + APP_STEP);
+    	logger.info("### app.db.driver = " + APP_DB_DRIVER);
     }
 }
