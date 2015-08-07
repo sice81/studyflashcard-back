@@ -36,7 +36,7 @@ public class Application {
 
     @PostConstruct
     public void addData() {
-    	System.out.println("app.step = " + APP_STEP);
-    	System.out.println("app.db.driver = " + APP_DB_DRIVER);
+    	System.out.println("### app.step = " + APP_STEP);
+    	System.out.println("### app.db.driver = " + APP_DB_DRIVER);
     }
 }
