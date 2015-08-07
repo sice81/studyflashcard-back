@@ -29,6 +29,28 @@ sudo yum install java-1.8.0-openjdk-devel
 sudo alternatives --config java
 ```
 
+## git 설치 (DEV)
+```
+yum install git-core
+```
+
+## jenkins 설치 (DEV)
+```
+sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+sudo yum install jenkins
+```
+
+### jenkins 포트 설정 8081
+```
+sudo su
+vi /etc/init.d/jenkins
+
+83 라인부근에 아래 추가
+JENKINS_PORT=8081
+```
+
+
 ## 각종 스크립트 생성
 argument.txt, deploy.sh, sdeploy.sh, genius-api 생성
 
