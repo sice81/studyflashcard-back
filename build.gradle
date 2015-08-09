@@ -39,6 +39,8 @@ dependencies {
     compile("org.springframework:spring-test:2.5")
 
     compile("org.hibernate:hibernate-core:4.3.10.Final")
+    compile('org.hibernate:hibernate-c3p0:4.3.10.Final')
+
     compile("commons-dbcp:commons-dbcp:1.4")
     compile("net.sf.ehcache:ehcache:2.9.0")
 
