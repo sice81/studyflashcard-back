@@ -86,29 +86,28 @@ public class CardpackService {
 		c.setOwnerUserId(user.getUserId());
 		c.setCreatedDate(new Date());
 		c.setS3Key(cardpackParam.getS3Key());
-
 		c.setCardpackStatusCd(CardpackStatusCdEnum.IN_PROGRESS);
 		c.setCardpackAccessCd(CardpackAccessCdEnum.valueOf(cardpackParam.getCardpackAccessCd()));
 		c.setExposureStore(cardpackParam.isExposureStore());
 		c.setAllowCopy(cardpackParam.isAllowCopy());
+		c.setModifiedDate(new Date());
 
 		return cardpackDao.insert(c);
 	}
 
 	public void save(CardpackParam cardpackParam, String cardpackId, String userId, User user) throws Exception {
-		Cardpack c = new Cardpack();
-
+		Cardpack c = cardpackDao.get(cardpackId);
 		c.setCardpackId(cardpackId);
 		c.setCardpackName(cardpackParam.getCardpackName());
 		c.setDocVer("1.0");
 		c.setCardCnt(getCardCnt(cardpackParam.getDocData()));
-		c.setOwnerUserId(user.getUserId());
-		c.setCreatedDate(new Date());
+//		c.setOwnerUserId(user.getUserId());
+//		c.setCreatedDate(new Date());
 		c.setS3Key(cardpackParam.getS3Key());
-
 		c.setCardpackAccessCd(CardpackAccessCdEnum.valueOf(cardpackParam.getCardpackAccessCd()));
 		c.setExposureStore(cardpackParam.isExposureStore());
 		c.setAllowCopy(cardpackParam.isAllowCopy());
+		c.setModifiedDate(new Date());
 
 		cardpackDao.update(c);
 	}
