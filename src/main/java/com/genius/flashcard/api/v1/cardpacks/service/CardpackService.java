@@ -109,6 +109,7 @@ public class CardpackService {
 		c.setCardpackAccessCd(CardpackAccessCdEnum.valueOf(cardpackParam.getCardpackAccessCd()));
 		c.setExposureStore(cardpackParam.isExposureStore());
 		c.setAllowCopy(cardpackParam.isAllowCopy());
+		c.setModifiedDate(new Date());
 
 		cardpackDao.update(c);
 	}

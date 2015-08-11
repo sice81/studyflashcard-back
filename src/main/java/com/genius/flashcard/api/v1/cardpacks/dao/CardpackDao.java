@@ -41,7 +41,9 @@ public class CardpackDao {
 	}
 
 	public void updateWithoutEvict(Cardpack cardpack) {
-		cardpack.setModifiedDate(new Date());
+		if (cardpack.getModifiedDate() == null) {
+			cardpack.setModifiedDate(new Date());
+		}
 		hibernateTemplate.update(cardpack);
 	}
 
