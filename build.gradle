@@ -16,7 +16,7 @@ apply plugin: 'spring-boot'
 
 jar {
     baseName = 'genius-study'
-    version =  '0.1.4'
+    version =  '0.1.6'
 }
 
 repositories {
